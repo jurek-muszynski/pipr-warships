@@ -23,11 +23,14 @@ class Board():
     :param size: number of either rows/columns, as the board is a square
     :type size: int
 
-    :param num_warships: number of warships situated at the board
+    :param num_warships: number of warships situated on the board
     :type num_warships: int
 
     :param locations_warships: locations of the warships
     :type locations_warships: list[Warship]
+
+    :param types_warships: amount of specific warship types on the board
+    :type types_warships: dict[int]
     """
 
     def __init__(self, size: int, num_warships: int, locations_warships: list[Warship] = []) -> None:

@@ -1,5 +1,5 @@
 from warship import Warship, Block
-from random import randint
+from random import randint, choice
 
 
 class NegativeValueError(Exception):
@@ -29,11 +29,11 @@ class Board():
     :param locations_warships: locations of the warships
     :type locations_warships: list[Warship]
 
-    :param types_warships: amount of specific warship types on the board
-    :type types_warships: dict[int]
+    :param warship_types: amount of specific warship types on the board
+    :type warship_types: dict[int]
     """
 
-    def __init__(self, size: int, num_warships: int, locations_warships: list[Warship] = []) -> None:
+    def __init__(self, size: int, num_warships: int, locations_warships: list[Warship] = [], warship_types: dict[int] = {}) -> None:
         if (size < 0):
             raise NegativeValueError(size)
         else:
@@ -43,23 +43,64 @@ class Board():
         else:
             self.__num_warships = num_warships
         self.__locations_warships = []
+        self.__warship_types = warship_types
 
-    def draw_location(self) -> Block:
-        x_coordinate = randint(0, self.__size-1)
-        y_coordinate = randint(0, self.__size-1)
-        # block = Block(x_coordinate, y_coordinate)
-        return (x_coordinate, y_coordinate)
+    def is_available(self, x, y):
+        return (x, y) not in self.__locations_warships
+
+    def get_available_locations_horizontal(self, warship_size):
+        locations = []
+        for x in range(self.__size):
+            for y in range(self.__size - warship_size + 1):
+                locations_inner = []
+                for size in range(warship_size):
+                    if self.is_available(x, y+size):
+                        locations_inner.append((x, y+size))
+                if (len(locations_inner) == warship_size):
+                    locations.append(locations_inner)
+        return locations
+
+    def get_available_locations_vertical(self, warship_size):
+        locations = []
+        for x in range(self.__size - warship_size + 1):
+            for y in range(self.__size):
+                locations_inner = []
+                for size in range(warship_size):
+                    if self.is_available(x+size, y):
+                        locations_inner.append((x+size, y))
+                if (len(locations_inner) == warship_size):
+                    locations.append(locations_inner)
+        return locations
+
+    def draw_location(self, size_to_add: int):
+        warship_size = size_to_add
+        alignment = choice(["horizontal", "vertical"])
+        if alignment == "horizontal":
+            available_locations = self.get_available_locations_horizontal(
+                warship_size)
+            num_of_available_locations = len(available_locations)
+            drawed_index = randint(0, num_of_available_locations-1)
+            return available_locations[drawed_index]
+        else:
+            available_locations = self.get_available_locations_vertical(
+                warship_size)
+            num_of_available_locations = len(available_locations)
+            drawed_index = randint(0, num_of_available_locations-1)
+            return available_locations[drawed_index]
 
     def draw_locations(self):
-        blocks_added = 0
-        while blocks_added < self.__num_warships:
-            block_to_add = self.draw_location()
-            if block_to_add not in self.__locations_warships:
-                self.add_location(block_to_add)
-                blocks_added += 1
+        warships_sizes = [5, 4, 3, 2, 1]
+        warships_to_add = 5
+        warships_added = 0
+        while warships_added < warships_to_add:
+            drawed_locations = self.draw_location(
+                warships_sizes[warships_added])
+            self.add_warship(drawed_locations)
+            warships_added += 1
 
-    def add_location(self, location: Block) -> None:
-        self.__locations_warships.append(location)
+    def add_warship(self, locations) -> None:
+        for x, y in locations:
+            self.__locations_warships.append((x, y))
 
     def print_legend_horizontal(self) -> str:
         legend_horizontal = [chr(num+65) for num in range(0, self.__size)]

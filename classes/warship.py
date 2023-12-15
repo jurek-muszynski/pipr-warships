@@ -27,49 +27,59 @@ class YCoordinateOutOfRangeError(Exception):
         self.__invalid_y_coordinate = coordinate
 
 
-class Block():
-    """
-    Block class. Represents a single point on the 2 dimensional board
-
-    :param x: x coordinate on the board, represented as a letter (A-...)
-    :type x: str
-
-    :param y: y coordinate on the board, represented as an integer (0-...)
-    :type y: int
-    """
-
-    def __init__(self, x: str, y: int) -> None:
-        self.__x = x
-        self.__y = y
-
-    @property
-    def x(self) -> str:
-        return self.__x
-
-    @property
-    def y(self) -> int:
-        return self.__y
-
-
 class Warship():
     """
     Warship class. Represents a single warship on the board,
     consisting of one, two or three blocks
 
     :param blocks: Represents the lists of blocks
+    :type blocks: list[int]
 
     :param size: warship's size.
     :type size: int
+
+    :param hits: warship's hit count
+    :type hits: int
     """
 
-    def __init__(self, blocks: list[Block]) -> None:
-        self.__blocks = blocks
-        self.__size = len(blocks)
+    def __init__(self, blocks: list[int], size: int) -> None:
+        self.__size = size
+        self.__hits = 0
+        if self.evaluate_blocks(blocks):
+            self.__blocks = blocks
 
     @property
-    def blocks(self) -> list[Block]:
+    def blocks(self):
         return self.__blocks
 
     @property
     def size(self) -> int:
         return self.__size
+
+    @property
+    def hits(self) -> int:
+        return self.__hits
+
+    def evaluate_blocks(self, blocks) -> bool:
+        size = self.__size
+        correct_blocks = []
+        for x, y in blocks:
+            if int(x) >= size or int(x) < 0:
+                raise XCoordinateOutOfRangeError(x)
+            if int(y) >= size or int(y) < 0:
+                raise YCoordinateOutOfRangeError(y)
+            else:
+                correct_blocks.append((x, y))
+        return correct_blocks == blocks
+
+    def __str__(self) -> str:
+        return f"{len(self.__blocks)} mast warship"
+
+    def was_hit(self, coordinates) -> bool:
+        if coordinates in self.__blocks:
+            self.__hits += 1
+            return True
+        return False
+
+    def was_sunk(self) -> bool:
+        return self.__hits == self.__size

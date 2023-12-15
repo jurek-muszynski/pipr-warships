@@ -44,8 +44,17 @@ class Board():
             self.__num_warships = num_warships
         self.__locations_warships = []
         self.__warship_types = warship_types
+        self.__warships = []
+        self.__hit = []
 
-    def is_available(self, x, y):
+    @property
+    def warships(self):
+        warships_str = ""
+        for warship in self.__warships:
+            warships_str += f"{str(warship)} "
+        return warships_str
+
+    def is_location_available(self, x, y):
         return (x, y) not in self.__locations_warships
 
     def get_available_locations_horizontal(self, warship_size):
@@ -54,7 +63,7 @@ class Board():
             for y in range(self.__size - warship_size + 1):
                 locations_inner = []
                 for size in range(warship_size):
-                    if self.is_available(x, y+size):
+                    if self.is_location_available(x, y+size):
                         locations_inner.append((x, y+size))
                 if (len(locations_inner) == warship_size):
                     locations.append(locations_inner)
@@ -66,7 +75,7 @@ class Board():
             for y in range(self.__size):
                 locations_inner = []
                 for size in range(warship_size):
-                    if self.is_available(x+size, y):
+                    if self.is_location_available(x+size, y):
                         locations_inner.append((x+size, y))
                 if (len(locations_inner) == warship_size):
                     locations.append(locations_inner)
@@ -90,13 +99,30 @@ class Board():
 
     def draw_locations(self):
         warships_sizes = [5, 4, 3, 2, 1]
-        warships_to_add = 5
+        warships_to_add = self.__num_warships
         warships_added = 0
         while warships_added < warships_to_add:
-            drawed_locations = self.draw_location(
-                warships_sizes[warships_added])
-            self.add_warship(drawed_locations)
-            warships_added += 1
+            try:
+                size_to_add = randint(1, self.__size-1)
+                drawed_locations = self.draw_location(size_to_add
+                                                      )
+                self.add_warship(drawed_locations)
+                self.__warships.append(
+                    Warship(drawed_locations, size_to_add)
+                )
+                warships_added += 1
+            except Exception as e:
+                print(str(e))
+
+    def drawed_warships_str(self):
+        warships_sizes = [
+            warship.size for warship in self.__warships if not warship.was_sunk()]
+        warships_sizes_dict = {size: warships_sizes.count(
+            size) for size in warships_sizes}
+        warship_str = ""
+        for warship_size in warships_sizes_dict:
+            warship_str += f"{warship_size} mast warship: x{warships_sizes_dict[warship_size]}\n"
+        return warship_str
 
     def add_warship(self, locations) -> None:
         for x, y in locations:
@@ -117,7 +143,36 @@ class Board():
             for index_inner in range(self.__size):
                 if (index_inner, index) not in self.__locations_warships:
                     board_str += "[ ]"
-                else:
+                elif (index_inner, index) in self.__hit:
                     board_str += "[x]"
+                else:
+                    board_str += "[o]"
             board_str += "\n"
         return board_str
+
+    def hit_result(self, coordinates):
+        if coordinates in self.__locations_warships:
+            return "You've hit a warship"
+        return "You've missed, try again"
+
+    def all_sunk(self) -> bool:
+        for warship in self.__warships:
+            if not warship.was_sunk():
+                return False
+        return True
+
+    def hit(self, coordinates):
+        x, y = coordinates
+        if (x, y) not in self.__hit:
+            self.__hit.append((x, y))
+        else:
+            return "You've hit here already before"
+        return self.hit_warships(coordinates)
+
+    def hit_warships(self, coordinates):
+        for warship in self.__warships:
+            if warship.was_hit(coordinates):
+                if warship.was_sunk():
+                    return f"You've sunk a {warship.size} mast warship"
+                return f"You've hit a {warship.size} mast warship"
+        return "You've missed, try again"

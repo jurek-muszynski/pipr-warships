@@ -1,16 +1,57 @@
-from warship import Block, Warship
-
-
-def test_create_block_standard():
-    block = Block("A", 8)
-    assert block.x == "A"
-    assert block.y == 8
+from warship import Warship
+from warship import (XCoordinateOutOfRangeError,
+                     YCoordinateOutOfRangeError)
+import pytest
 
 
 def test_create_warship_standard():
     blocks = [
-        Block("A", 1), Block("A", 2), Block("A", 3)
+        (0, 0), (0, 1), (0, 2)
     ]
-    warship = Warship(blocks)
+    warship = Warship(blocks, 3)
     assert warship.size == 3
     assert warship.blocks == blocks
+    assert warship.hits == 0
+
+
+def test_create_warship_invalid():
+    with pytest.raises(ValueError):
+        Warship([("A", "0")], 1)
+    with pytest.raises(XCoordinateOutOfRangeError):
+        Warship([("1", "0")], 1)
+    with pytest.raises(YCoordinateOutOfRangeError):
+        Warship([("0", "2")], 1)
+
+
+def test_warship_str_std():
+    blocks = [
+        (0, 0), (0, 1), (0, 2)
+    ]
+    warship = Warship(blocks, 3)
+    assert str(warship) == "3 mast warship"
+
+
+def test_warship_hit_std():
+    blocks = [
+        (0, 0), (0, 1), (0, 2)
+    ]
+    warship = Warship(blocks, 3)
+    assert warship.hits == 0
+    warship.was_hit((1, 0))
+    assert warship.hits == 0
+    warship.was_hit((0, 0))
+    assert warship.hits == 1
+
+
+def test_warship_hit_sunk():
+    blocks = [
+        (0, 0), (0, 1), (0, 2)
+    ]
+    warship = Warship(blocks, 3)
+    assert warship.hits == 0
+    assert warship.was_sunk() is not True
+    warship.was_hit((0, 0))
+    warship.was_hit((0, 1))
+    warship.was_hit((0, 2))
+    assert warship.hits == 3
+    assert warship.was_sunk() is True

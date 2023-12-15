@@ -98,7 +98,7 @@ class Board():
             return available_locations[drawed_index]
 
     def draw_locations(self):
-        warships_sizes = [5, 4, 3, 2, 1]
+        # warships_sizes = [5, 4, 3, 2, 1]
         warships_to_add = self.__num_warships
         warships_added = 0
         while warships_added < warships_to_add:
@@ -107,12 +107,10 @@ class Board():
                 drawed_locations = self.draw_location(size_to_add
                                                       )
                 self.add_warship(drawed_locations)
-                self.__warships.append(
-                    Warship(drawed_locations, size_to_add)
-                )
                 warships_added += 1
             except Exception as e:
                 print(str(e))
+                pass
 
     def drawed_warships_str(self):
         warships_sizes = [
@@ -125,6 +123,9 @@ class Board():
         return warship_str
 
     def add_warship(self, locations) -> None:
+        self.__warships.append(
+            Warship(locations, len(locations))
+        )
         for x, y in locations:
             self.__locations_warships.append((x, y))
 

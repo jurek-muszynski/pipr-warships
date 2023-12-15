@@ -1,30 +1,11 @@
-
-class XCoordinateOutOfRangeError(Exception):
+class InvalidCoordinatesError(Exception):
     """
-    XCoordinateOutOfRangeError Exception.
-    Raised when an x coordinate is not within the board's range
-
-    :param invalid_x_coordinate: Represents an x coordinate out of range
-    :type invalid_x_coordinate: str
+    InvalidCoordinates Exception.
+    Raised when one of the coordinates is out of range
     """
 
-    def __init__(self, coordinate: str) -> None:
-        super().__init__("x Coordinate must be within the board's range")
-        self.__invalid_x_coordinate = coordinate
-
-
-class YCoordinateOutOfRangeError(Exception):
-    """
-    YCoordinateOutOfRangeError Exception.
-    Raised when a y coordinate is not within the board's range
-
-    :param invalid_y_coordinate: Represents a y coordinate out of range
-    :type invalid_y_coordinate: int
-    """
-
-    def __init__(self, coordinate: int) -> None:
-        super().__init__("y Coordinate must be within the board's range")
-        self.__invalid_y_coordinate = coordinate
+    def __init__(self) -> None:
+        super().__init__("Invalid coordinates")
 
 
 class Warship():
@@ -43,10 +24,16 @@ class Warship():
     """
 
     def __init__(self, blocks: list[int], size: int) -> None:
+        """
+        Creates an instance of a warship.
+        Raises InvalidCoordinatesError Exception if coordiantes are invalid
+        """
         self.__size = size
         self.__hits = 0
         if self.evaluate_blocks(blocks):
             self.__blocks = blocks
+        else:
+            raise InvalidCoordinatesError()
 
     @property
     def blocks(self):
@@ -61,25 +48,33 @@ class Warship():
         return self.__hits
 
     def evaluate_blocks(self, blocks) -> bool:
+        """
+        Checks if all blocks passed in the arguments' list are correct
+        """
         size = self.__size
-        correct_blocks = []
-        for x, y in blocks:
-            if int(x) >= size or int(x) < 0:
-                raise XCoordinateOutOfRangeError(x)
-            if int(y) >= size or int(y) < 0:
-                raise YCoordinateOutOfRangeError(y)
-            else:
-                correct_blocks.append((x, y))
+        correct_blocks = [(int(x), int(y)) for x, y in blocks if
+                          int(x) >= 0 and int(x) < size and
+                          int(y) >= 0 and int(y) < size]
         return correct_blocks == blocks
 
     def __str__(self) -> str:
+        """
+        Returns a sample description of a warship:
+        {n} mast warship
+        """
         return f"{len(self.__blocks)} mast warship"
 
     def was_hit(self, coordinates) -> bool:
+        """
+        Checks if hitting at the passed coordinates would be successful
+        """
         if coordinates in self.__blocks:
             self.__hits += 1
             return True
         return False
 
     def was_sunk(self) -> bool:
+        """
+        Checks if a warship has been sunk
+        """
         return self.__hits == self.__size

@@ -1,6 +1,5 @@
 from warship import Warship
-from warship import (XCoordinateOutOfRangeError,
-                     YCoordinateOutOfRangeError)
+from warship import InvalidCoordinatesError
 import pytest
 
 
@@ -17,9 +16,9 @@ def test_create_warship_standard():
 def test_create_warship_invalid():
     with pytest.raises(ValueError):
         Warship([("A", "0")], 1)
-    with pytest.raises(XCoordinateOutOfRangeError):
+    with pytest.raises(InvalidCoordinatesError):
         Warship([("1", "0")], 1)
-    with pytest.raises(YCoordinateOutOfRangeError):
+    with pytest.raises(InvalidCoordinatesError):
         Warship([("0", "2")], 1)
 
 

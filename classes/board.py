@@ -1,4 +1,4 @@
-from warship import Warship, Block
+from warship import Warship
 from random import randint, choice
 
 

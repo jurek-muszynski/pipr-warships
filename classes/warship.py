@@ -30,10 +30,11 @@ class Warship():
         """
         self.__size = size
         self.__hits = 0
-        if self.evaluate_blocks(blocks):
-            self.__blocks = blocks
-        else:
-            raise InvalidCoordinatesError()
+        self.__blocks = blocks
+        # if self.evaluate_blocks(blocks):
+        #     self.__blocks = blocks
+        # else:
+        #     raise InvalidCoordinatesError()
 
     @property
     def blocks(self):

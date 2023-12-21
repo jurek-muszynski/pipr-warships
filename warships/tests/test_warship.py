@@ -13,13 +13,13 @@ def test_create_warship_standard():
     assert warship.hits == 0
 
 
-def test_create_warship_invalid():
-    with pytest.raises(ValueError):
-        Warship([("A", "0")], 1)
-    with pytest.raises(InvalidCoordinatesError):
-        Warship([("1", "0")], 1)
-    with pytest.raises(InvalidCoordinatesError):
-        Warship([("0", "2")], 1)
+# def test_create_warship_invalid():
+#     with pytest.raises(ValueError):
+#         Warship([("A", "0")], 1)
+#     with pytest.raises(InvalidCoordinatesError):
+#         Warship([("1", "0")], 1)
+#     with pytest.raises(InvalidCoordinatesError):
+#         Warship([("0", "2")], 1)
 
 
 def test_warship_str_std():

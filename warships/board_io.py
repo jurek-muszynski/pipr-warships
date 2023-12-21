@@ -13,7 +13,10 @@ def print_board_io(size, locations_warships, locations_hit):
         board_str += f"{index} "
         for index_inner in range(size):
             if (index_inner, index) not in locations_warships:
-                board_str += "[ ]"
+                if (index_inner, index) not in locations_hit:
+                    board_str += "[ ]"
+                else:
+                    board_str += "[#]"
             elif (index_inner, index) in locations_hit:
                 board_str += "[x]"
             else:

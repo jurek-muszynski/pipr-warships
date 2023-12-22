@@ -2,6 +2,7 @@ from random import randint
 from pick import pick
 from board import Board
 from time import sleep
+from os import system
 
 
 class ForbiddenInputError(Exception):
@@ -44,7 +45,6 @@ class Player():
         return formatted
 
     def place_warships(self):
-        print(self.board.print_board())
         sleep(1)
         for size in self.__warship_types:
             to_add = self.__warship_types.get(size)
@@ -66,6 +66,7 @@ class Player():
                 added += 1
                 print(self.board.print_board())
                 sleep(1)
+                system("clear")
 
 
 class Ai(Player):

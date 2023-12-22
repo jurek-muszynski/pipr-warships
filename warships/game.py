@@ -1,6 +1,11 @@
 from board import Board
-from player import Player, Ai
+from player import Player
 from time import sleep
+from os import system
+
+
+class GameEnded(Exception):
+    pass
 
 
 class Game():
@@ -14,13 +19,12 @@ class Game():
             Board(self.__board_size, self.__board_size))
         self.__ai = Player(Board(self.__board_size, self.__board_size))
         self.__ai.board.draw_locations()
-        self.__has_ended = False
 
     def players_turn(self):
         print("AI's BOARD")
         print(self.__ai.board.print_board())
         hit = self.__player.hit(
-            input("Where would you like to hit > "))
+            input("Where would you like to hit: "))
         self.__ai.board.hit(hit)
         print("AI'S BOARD")
         print(self.__ai.board.print_board())
@@ -38,21 +42,34 @@ class Game():
 
     def result_player(self):
         if self.__ai.board.all_sunk():
+            sleep(1)
+            system("clear")
+            sleep(1)
             print("ALL AI'S SHIPS SANK")
-            sleep(0.5)
+            sleep(1)
+            system("clear")
+            sleep(1)
             print("YOU'VE WON!")
-            self.__has_ended = True
+            raise GameEnded()
+        sleep(1)
+        system("clear")
 
     def result_ai(self):
         if self.__player.board.all_sunk():
             print("ALL YOUR SHIPS SANK!")
-            sleep(0.5)
+            sleep(1)
             print("YOU'VE LOST")
-            self.__has_ended = True
+            raise GameEnded()
+        sleep(1)
+        system("clear")
 
     def play(self):
         self.__player.place_warships()
-        while not self.__has_ended:
-            self.players_turn()
-            self.ai_turn()
-            sleep(0.5)
+        while True:
+            try:
+                self.players_turn()
+                self.ai_turn()
+            except GameEnded:
+                sleep(1)
+                system("clear")
+                break

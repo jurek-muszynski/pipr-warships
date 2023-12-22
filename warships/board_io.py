@@ -40,7 +40,6 @@ def print_hit_warships_io(warships, coordinates):
     for warship in warships:
         if warship.was_hit(coordinates):
             if warship.was_sunk():
-                # warships.remove(warship)
                 return f"You've sunk a {warship.size} mast warship"
             return f"You've hit a {warship.size} mast warship"
     return "You've missed, try again"

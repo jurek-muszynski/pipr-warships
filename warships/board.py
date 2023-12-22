@@ -105,6 +105,13 @@ class Board():
                     locations.append(locations_inner)
         return locations
 
+    def is_possible_to_add(self, size, alignment):
+        try:
+            self.draw_location(size, alignment)
+        except IndexError:
+            return False
+        return self.draw_location(size, alignment) is not None
+
     def draw_location(self, size_to_add: int, alignment: str):
         warship_size = size_to_add
         if alignment == "horizontal":
@@ -116,19 +123,12 @@ class Board():
                 warship_size)
             return choice(available_locations)
 
-    def is_possible_to_add(self, size, alignment):
-        try:
-            self.draw_location(size, alignment)
-        except IndexError:
-            return False
-        return self.draw_location(size, alignment) is not None
-
     def draw_locations(self):
-        warships_sizes = [size for size in range(1, self.__size+1)]
+        warships_sizes = [size for size in range(self.__size, 0, -1)]
         warships_to_add = self.__num_warships
         warships_added = 0
         while warships_added < warships_to_add:
-            to_add = choice(warships_sizes)
+            to_add = warships_sizes[warships_added]
             alignment = choice(["horizontal", "vertical"])
             if self.is_possible_to_add(to_add, alignment):
                 drawed_locations = self.draw_location(

@@ -60,7 +60,6 @@ class Board():
             raise InvalidWarshipCountError(num_warships)
         else:
             self.__num_warships = num_warships
-        self.__locations_warships = []
         self.__warships = []
         self.__hit = []
 
@@ -71,8 +70,16 @@ class Board():
             warships_str += f"{str(warship)} "
         return warships_str
 
+    @property
+    def size(self) -> int:
+        return self.__size
+
     def is_location_available(self, x, y):
-        return (x, y) not in self.__locations_warships
+        for warship in self.__warships:
+            for x_warship, y_warship in warship.blocks:
+                if x == x_warship and y == y_warship:
+                    return False
+        return True
 
     def get_available_locations_horizontal(self, warship_size):
         locations = []
@@ -133,11 +140,18 @@ class Board():
                 warships_sizes.remove(to_add)
 
     def add_warship(self, locations) -> None:
+        warship_to_add = Warship(locations, len(locations))
         self.__warships.append(
-            Warship(locations, len(locations))
+            warship_to_add
         )
-        for x, y in locations:
-            self.__locations_warships.append((x, y))
+
+    def warship_types(self) -> dict[int]:
+        warships_sizes = [
+            warship.size for warship in
+            self.__warships if not warship.was_sunk()]
+        warships_sizes_dict = {size: warships_sizes.count(
+            size) for size in warships_sizes}
+        return warships_sizes_dict
 
     def all_sunk(self) -> bool:
         for warship in self.__warships:
@@ -150,8 +164,10 @@ class Board():
         if (x, y) not in self.__hit:
             self.__hit.append((x, y))
         else:
-            return "You've already hit here before"
-        return self.hit_warships(coordinates)
+            print("You've already hit here before")
+            return
+        print(self.hit_warships(coordinates))
+        return True
 
     def hit_warships(self, coordinates):
         return print_hit_warships_io(self.__warships, coordinates)
@@ -161,6 +177,9 @@ class Board():
 
     def print_board(self) -> str:
         size = self.__size
-        locations_warships = self.__locations_warships
+        locations_warships = []
+        for warship in self.__warships:
+            for (x, y) in warship.blocks:
+                locations_warships.append((x, y))
         locations_hit = self.__hit
         return print_board_io(size, locations_warships, locations_hit)

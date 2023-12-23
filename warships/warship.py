@@ -45,13 +45,13 @@ class Warship():
         """
         return f"{len(self.__blocks)} mast warship"
 
-    def was_hit(self, coordinates) -> bool:
+    def was_hit(self, coors) -> bool:
         """
         Checks if hitting the following coordinates was successful
         """
-        if coordinates in self.__blocks and coordinates not in self.__hit_blocks:
+        if coors in self.__blocks and coors not in self.__hit_blocks:
             self.__hits += 1
-            self.__hit_blocks.append(coordinates)
+            self.__hit_blocks.append(coors)
             return True
         return False
 

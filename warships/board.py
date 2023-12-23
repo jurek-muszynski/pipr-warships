@@ -74,7 +74,7 @@ class Board():
     def size(self) -> int:
         return self.__size
 
-    def is_location_available(self, x, y):
+    def _is_location_available(self, x, y):
         for warship in self.__warships:
             for x_warship, y_warship in warship.blocks:
                 if x == x_warship and y == y_warship:
@@ -87,7 +87,7 @@ class Board():
             for y in range(self.__size - warship_size + 1):
                 locations_inner = []
                 for size in range(warship_size):
-                    if self.is_location_available(x, y+size):
+                    if self._is_location_available(x, y+size):
                         locations_inner.append((x, y+size))
                 if (len(locations_inner) == warship_size):
                     locations.append(locations_inner)
@@ -99,7 +99,7 @@ class Board():
             for y in range(self.__size):
                 locations_inner = []
                 for size in range(warship_size):
-                    if self.is_location_available(x+size, y):
+                    if self._is_location_available(x+size, y):
                         locations_inner.append((x+size, y))
                 if (len(locations_inner) == warship_size):
                     locations.append(locations_inner)
@@ -152,9 +152,8 @@ class Board():
             self.__hit.append((x, y))
         else:
             print("You've already hit here before")
-            return
-        print(self.hit_warships(coordinates))
-        return True
+            return False
+        return print_hit_warships_io(self.__warships, coordinates)
 
     def hit_warships(self, coordinates):
         return print_hit_warships_io(self.__warships, coordinates)

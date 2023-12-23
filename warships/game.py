@@ -42,7 +42,7 @@ class Game():
         hit = self.__ai.smart_hit()
         print(hit)
         sleep(1)
-        self.__player.board.hit(hit)
+        self.__ai.set_last_hit(self.__player.board.hit(hit))
         self.result_ai()
 
     def result_player(self):

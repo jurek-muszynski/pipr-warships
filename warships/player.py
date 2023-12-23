@@ -78,19 +78,36 @@ class Ai(Player):
 
     def __init__(self, board) -> None:
         super().__init__(board)
+        self.__hit = []
+        self.__success_hit = []
+        self.__warships = {size: [] for size in self.__warship_types.keys()}
 
     def choose_coordinates(self):
         x = randint(0, self.board_size-1)
         y = randint(0, self.board_size-1)
         return x, y
 
-    def set_last_hit_success(self, success: bool):
-        self.__last_hit_success = success
-        if success:
-            self.__successfull_hit.append(self.__hit[-1])
+    def set_last_hit(self, last_hit):
+        # Unpacking last_hit parameters (was_hit, was_sunk, warship_size)
+        # If not hit, then continue
+        # If sunk, delete last successful hit
+        # If hit & not sunk, ...
+        was_hit, was_sunk, size = last_hit
+        if not was_hit:
+            return
+        else:
+            self.__success_hit.append(self.__hit[-1])
+            self.__warships[size].append(self.__hit[-1])
+            if was_sunk:
+                for coors in self.__warships[size]:
+                    self.__success_hit.remove(coors)
+                self.__warships.pop(size)
+                return
 
     def smart_hit(self):
         # if self.__last_hit_success:
         #     pass
         # else:
-        return self.choose_coordinates()
+        coordinates = self.choose_coordinates()
+        self.__hit.append(coordinates)
+        return coordinates

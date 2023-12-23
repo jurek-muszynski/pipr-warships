@@ -1,5 +1,5 @@
 from warship import Warship
-from board_io import print_board_io, print_drawed_warships_io, print_hit_warships_io
+from board_io import print_board_io, print_warships_io, print_hit_warships_io
 from random import choice
 
 
@@ -124,7 +124,8 @@ class Board():
             return choice(available_locations)
 
     def draw_locations(self):
-        warships_sizes = [size for size in range(self.__size, 0, -1)]
+        warships_sizes = [size for size in range(
+            self.__size if self.__size < 5 else 5, 0, -1)]
         warships_to_add = self.__num_warships
         warships_added = 0
         while warships_added < warships_to_add:
@@ -172,14 +173,15 @@ class Board():
     def hit_warships(self, coordinates):
         return print_hit_warships_io(self.__warships, coordinates)
 
-    def drawed_warships_str(self):
-        return print_drawed_warships_io(self.__warships)
+    def warships_str(self):
+        return print_warships_io(self.__warships)
 
-    def print_board(self) -> str:
+    def print_board(self, show_warships: bool = False) -> str:
         size = self.__size
         locations_warships = []
         for warship in self.__warships:
             for (x, y) in warship.blocks:
                 locations_warships.append((x, y))
         locations_hit = self.__hit
-        return print_board_io(size, locations_warships, locations_hit)
+        return print_board_io(size, locations_warships,
+                              locations_hit, show_warships)

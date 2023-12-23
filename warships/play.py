@@ -23,7 +23,7 @@ def start():
 
 
 def instructions():
-    print("\nInstructions:")
+    print("Instructions: ")
 
 
 def main():
@@ -36,9 +36,13 @@ def main():
             case "2":
                 instructions()
             case "3":
+                sleep(1)
+                print("Thanks for playing! See you soon :)")
+                sleep(1)
+                system("clear")
                 break
             case _:
-                print("\nInvalid choice. Enter a number between 1 and 3")
+                print("Invalid choice. Enter a number between 1 and 3\n")
 
 
 if __name__ == "__main__":

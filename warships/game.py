@@ -16,11 +16,15 @@ class Game():
     def __init__(self, board_size: int) -> None:
         self.__board_size = board_size
         self.__player = Player(
-            Board(self.__board_size, self.__board_size))
-        self.__ai = Player(Board(self.__board_size, self.__board_size))
+            Board(self.__board_size, self.__board_size
+                  if self.__board_size < 5 else 5))
+        self.__ai = Player(
+            Board(self.__board_size, self.__board_size
+                  if self.__board_size < 5 else 5))
         self.__ai.board.draw_locations()
 
     def players_turn(self):
+        print(self.__ai.board.warships_str())
         print("AI's BOARD")
         print(self.__ai.board.print_board())
         hit = self.__player.hit(
@@ -32,12 +36,12 @@ class Game():
 
     def ai_turn(self):
         print("YOUR BOARD")
-        print(self.__player.board.print_board())
+        print(self.__player.board.print_board(True))
         hit = self.__ai.hit(
             input("Where would the AI like to hit > "))
         self.__player.board.hit(hit)
         print("YOUR BOARD")
-        print(self.__player.board.print_board())
+        print(self.__player.board.print_board(True))
         self.result_ai()
 
     def result_player(self):
@@ -56,7 +60,11 @@ class Game():
 
     def result_ai(self):
         if self.__player.board.all_sunk():
+            sleep(1)
+            system("clear")
             print("ALL YOUR SHIPS SANK!")
+            sleep(1)
+            system("clear")
             sleep(1)
             print("YOU'VE LOST")
             raise GameEnded()

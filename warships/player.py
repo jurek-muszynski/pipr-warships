@@ -15,7 +15,8 @@ class Player():
         self.__board = board
         self.__board_size = self.__board.size
         self.__warship_types = {
-            size: 1 for size in range(self.__board.size, 0, -1)}
+            size: 1 for size in range(board.size if
+                                      board.size < 5 else 5, 0, -1)}
 
     @property
     def board_size(self) -> int:
@@ -39,7 +40,7 @@ class Player():
             formatted_inner = []
             for location_inner in location:
                 x, y = location_inner
-                formatted_inner.append((chr(x+65), y))
+                formatted_inner.append(chr(x+65) + str(y))
             formatted.append(formatted_inner)
 
         return formatted
@@ -64,7 +65,7 @@ class Player():
                     unique_available_locations[index]
                 )
                 added += 1
-                print(self.board.print_board())
+                print(self.board.print_board(True))
                 sleep(1)
                 system("clear")
 

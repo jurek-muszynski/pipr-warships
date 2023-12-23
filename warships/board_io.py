@@ -6,7 +6,7 @@ def print_legend_horizontal_io(size):
     return legend_horizontal_as_str
 
 
-def print_board_io(size, locations_warships, locations_hit):
+def print_board_io(size, locations_warships, locations_hit, show_warships):
     board_str = print_legend_horizontal_io(size)
     board_str += "\n"
     for index in range(size):
@@ -20,17 +20,20 @@ def print_board_io(size, locations_warships, locations_hit):
             elif (index_inner, index) in locations_hit:
                 board_str += "[x]"
             else:
-                board_str += "[o]"
+                if show_warships:
+                    board_str += "[o]"
+                else:
+                    board_str += "[ ]"
         board_str += "\n"
     return board_str
 
 
-def print_drawed_warships_io(warships):
+def print_warships_io(warships):
     warships_sizes = [
         warship.size for warship in warships if not warship.was_sunk()]
     warships_sizes_dict = {size: warships_sizes.count(
         size) for size in warships_sizes}
-    warship_str = ""
+    warship_str = "Warships to sink:\n"
     for size in warships_sizes_dict:
         warship_str += f"{size} mast warship: x{warships_sizes_dict[size]}\n"
     return warship_str
@@ -42,4 +45,4 @@ def print_hit_warships_io(warships, coordinates):
             if warship.was_sunk():
                 return f"You've sunk a {warship.size} mast warship"
             return f"You've hit a {warship.size} mast warship"
-    return "You've missed, try again"
+    return "Miss"

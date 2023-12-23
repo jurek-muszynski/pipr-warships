@@ -33,7 +33,7 @@ def print_warships_io(warships):
         warship.size for warship in warships if not warship.was_sunk()]
     warships_sizes_dict = {size: warships_sizes.count(
         size) for size in warships_sizes}
-    warship_str = "Warships to sink:\n"
+    warship_str = ""
     for size in warships_sizes_dict:
         warship_str += f"{size} mast warship: x{warships_sizes_dict[size]}\n"
     return warship_str

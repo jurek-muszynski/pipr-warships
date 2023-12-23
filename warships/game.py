@@ -1,5 +1,5 @@
 from board import Board
-from player import Player
+from player import Player, Ai
 from time import sleep
 from os import system
 
@@ -18,30 +18,31 @@ class Game():
         self.__player = Player(
             Board(self.__board_size, self.__board_size
                   if self.__board_size < 5 else 5))
-        self.__ai = Player(
+        self.__ai = Ai(
             Board(self.__board_size, self.__board_size
                   if self.__board_size < 5 else 5))
         self.__ai.board.draw_locations()
 
     def players_turn(self):
+        print("\nYOUR TURN")
+        sleep(1)
         print(self.__ai.board.warships_str())
         print("AI's BOARD")
         print(self.__ai.board.print_board())
         hit = self.__player.hit(
             input("Where would you like to hit: "))
         self.__ai.board.hit(hit)
-        print("AI'S BOARD")
-        print(self.__ai.board.print_board())
         self.result_player()
 
     def ai_turn(self):
+        print("\nAI'S TURN")
+        sleep(1)
         print("YOUR BOARD")
         print(self.__player.board.print_board(True))
-        hit = self.__ai.hit(
-            input("Where would the AI like to hit > "))
+        hit = self.__ai.smart_hit()
+        print(hit)
+        sleep(1)
         self.__player.board.hit(hit)
-        print("YOUR BOARD")
-        print(self.__player.board.print_board(True))
         self.result_ai()
 
     def result_player(self):
@@ -56,7 +57,6 @@ class Game():
             print("YOU'VE WON!")
             raise GameEnded()
         sleep(1)
-        system("clear")
 
     def result_ai(self):
         if self.__player.board.all_sunk():
@@ -69,7 +69,6 @@ class Game():
             print("YOU'VE LOST")
             raise GameEnded()
         sleep(1)
-        system("clear")
 
     def play(self):
         self.__player.place_warships()

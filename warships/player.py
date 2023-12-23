@@ -26,6 +26,10 @@ class Player():
     def board(self) -> Board:
         return self.__board
 
+    @property
+    def warship_types(self):
+        return self.__warship_types
+
     def hit(self, hit_input: str):
         x = str.title(hit_input[0])
         x = ord(x)-65
@@ -72,16 +76,8 @@ class Player():
 
 class Ai(Player):
 
-    def __init__(self, board, warship_types) -> None:
+    def __init__(self, board) -> None:
         super().__init__(board)
-        self.__warship_types = warship_types
-        self.__hit = []
-        self.__last_hit_success = False
-        self.__successfull_hit = []
-
-    @property
-    def warship_types(self) -> dict[int]:
-        return self.__warship_types
 
     def choose_coordinates(self):
         x = randint(0, self.board_size-1)
@@ -93,12 +89,8 @@ class Ai(Player):
         if success:
             self.__successfull_hit.append(self.__hit[-1])
 
-    def hit(self):
-        if self.__last_hit_success:
-            pass
-        else:
-            x, y = self.choose_coordinates()
-            while (x, y) in self.__hit:
-                x, y = self.choose_coordinates()
-            self.__hit.append((x, y))
-            return x, y
+    def smart_hit(self):
+        # if self.__last_hit_success:
+        #     pass
+        # else:
+        return self.choose_coordinates()

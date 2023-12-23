@@ -105,23 +105,14 @@ class Board():
                     locations.append(locations_inner)
         return locations
 
-    def is_possible_to_add(self, size, alignment):
-        try:
-            self.draw_location(size, alignment)
-        except IndexError:
-            return False
-        return self.draw_location(size, alignment) is not None
-
-    def draw_location(self, size_to_add: int, alignment: str):
+    def draw_location(self, size_to_add: int):
         warship_size = size_to_add
-        if alignment == "horizontal":
-            available_locations = self.get_available_locations_horizontal(
-                warship_size)
-            return choice(available_locations)
-        else:
-            available_locations = self.get_available_locations_vertical(
-                warship_size)
-            return choice(available_locations)
+        available_locations_h = self.get_available_locations_horizontal(
+            warship_size)
+        available_locations_v = self.get_available_locations_vertical(
+            warship_size)
+        available_locations = available_locations_v + available_locations_h
+        return choice(available_locations)
 
     def draw_locations(self):
         warships_sizes = [size for size in range(
@@ -130,15 +121,10 @@ class Board():
         warships_added = 0
         while warships_added < warships_to_add:
             to_add = warships_sizes[warships_added]
-            alignment = choice(["horizontal", "vertical"])
-            if self.is_possible_to_add(to_add, alignment):
-                drawed_locations = self.draw_location(
-                    to_add, alignment)
-
-                self.add_warship(drawed_locations)
-                warships_added += 1
-            else:
-                warships_sizes.remove(to_add)
+            drawed_locations = self.draw_location(
+                to_add)
+            self.add_warship(drawed_locations)
+            warships_added += 1
 
     def add_warship(self, locations) -> None:
         warship_to_add = Warship(locations)

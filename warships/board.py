@@ -141,7 +141,7 @@ class Board():
                 warships_sizes.remove(to_add)
 
     def add_warship(self, locations) -> None:
-        warship_to_add = Warship(locations, len(locations))
+        warship_to_add = Warship(locations)
         self.__warships.append(
             warship_to_add
         )

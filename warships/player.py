@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, choice
 from pick import pick
 from board import Board
 from time import sleep
@@ -80,12 +80,67 @@ class Ai(Player):
         super().__init__(board)
         self.__hit = []
         self.__success_hit = []
-        self.__warships = {size: [] for size in self.__warship_types.keys()}
+        self.__warships = {size: [] for size in self.warship_types.keys()}
+        self.__next_hit = 0
 
     def choose_coordinates(self):
         x = randint(0, self.board_size-1)
         y = randint(0, self.board_size-1)
         return x, y
+
+    def _is_location_available(self, x, y):
+        return (x, y) not in sum(self.__warships.values(), [])
+
+    def get_possible_locations_horizontal(self, warship_size):
+        locations = []
+        for x in range(self.board_size):
+            for y in range(self.board_size - warship_size + 1):
+                locations_inner = []
+                for size in range(warship_size):
+                    # if self._is_location_available(x, y+size):
+                    locations_inner.append((x, y+size))
+                if (len(locations_inner) == warship_size):
+                    locations.append(locations_inner)
+        return locations
+
+    def get_possible_locations_vertical(self, warship_size):
+        locations = []
+        for x in range(self.board_size - warship_size + 1):
+            for y in range(self.board_size):
+                locations_inner = []
+                for size in range(warship_size):
+                    # if self._is_location_available(x+size, y):
+                    locations_inner.append((x+size, y))
+                if (len(locations_inner) == warship_size):
+                    locations.append(locations_inner)
+        return locations
+
+    def flatten_valid_locations(self, locations, hits):
+        flattened_locations = []
+        for locations_inner in locations:
+            flattened_locations.append([
+                coors for coors in locations_inner if coors not in hits
+            ])
+        return sum(flattened_locations, [])
+
+    def get_next_possible_location(self, size, hits):
+        possible_locations = self.get_possible_locations_horizontal(size) + \
+            self.get_possible_locations_vertical(size)
+
+        # return ([locations for locations in possible_locations if
+        #          hit in locations])
+
+        valid_locations = []
+
+        for locations in possible_locations:
+            valid = True
+            for hit in hits:
+                if hit not in locations:
+                    valid = False
+            if valid:
+                valid_locations.append(locations)
+
+        return self.flatten_valid_locations(valid_locations, hits)
 
     def set_last_hit(self, last_hit):
         # Unpacking last_hit parameters (was_hit, was_sunk, warship_size)
@@ -94,8 +149,10 @@ class Ai(Player):
         # If hit & not sunk, ...
         was_hit, was_sunk, size = last_hit
         if not was_hit:
+            self.__next_hit == self.choose_coordinates()
             return
         else:
+            # print(self.__hit)
             self.__success_hit.append(self.__hit[-1])
             self.__warships[size].append(self.__hit[-1])
             if was_sunk:
@@ -103,11 +160,23 @@ class Ai(Player):
                     self.__success_hit.remove(coors)
                 self.__warships.pop(size)
                 return
+            possible_locations = self.get_next_possible_location(
+                size, self.__warships[size])
+            self.__next_hit = choice(possible_locations)
+            return
 
     def smart_hit(self):
         # if self.__last_hit_success:
         #     pass
         # else:
-        coordinates = self.choose_coordinates()
+        if len(self.__hit) == 0 or self.__next_hit == 0:
+            coordinates = self.choose_coordinates()
+        else:
+            coordinates = self.__next_hit
         self.__hit.append(coordinates)
         return coordinates
+
+
+# ai = Ai(Board(2, 2))
+# ai.__hit = [(0, 0)]
+# print((ai.set_last_hit((True, False, 2))))

@@ -152,7 +152,7 @@ class Board():
             self.__hit.append((x, y))
         else:
             print("You've already hit here before")
-            return False
+            return (False, False, 0)
         return print_hit_warships_io(self.__warships, coordinates)
 
     def hit_warships(self, coordinates):

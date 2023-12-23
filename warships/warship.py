@@ -24,6 +24,7 @@ class Warship():
             self.__blocks = blocks
         self.__size = len(blocks)
         self.__hits = 0
+        self.__hit_blocks = []
 
     @property
     def blocks(self):
@@ -48,8 +49,9 @@ class Warship():
         """
         Checks if hitting the following coordinates was successful
         """
-        if coordinates in self.__blocks:
+        if coordinates in self.__blocks and coordinates not in self.__hit_blocks:
             self.__hits += 1
+            self.__hit_blocks.append(coordinates)
             return True
         return False
 

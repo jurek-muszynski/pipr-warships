@@ -38,6 +38,18 @@ def test_warship_hit_std():
     assert warship.hits == 1
 
 
+def test_warship_hit_same_block():
+    blocks = [
+        (0, 0), (0, 1), (0, 2)
+    ]
+    warship = Warship(blocks)
+    assert warship.hits == 0
+    assert warship.was_hit((0, 0))
+    assert warship.hits == 1
+    assert not warship.was_hit((0, 0))
+    assert warship.hits == 1
+
+
 def test_warship_hit_sunk():
     blocks = [
         (0, 0), (0, 1), (0, 2)

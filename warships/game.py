@@ -40,7 +40,7 @@ class Game():
         print("YOUR BOARD")
         print(self.__player.board.print_board(True))
         hit = self.__ai.smart_hit()
-        print(hit)
+        print(chr(int(hit[0])+65) + str(hit[1]))
         sleep(1)
         self.__ai.set_last_hit(self.__player.board.hit(hit))
         self.result_ai()

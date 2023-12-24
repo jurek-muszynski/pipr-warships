@@ -7,6 +7,7 @@ def test_create_warship_standard():
         (0, 0), (0, 1), (0, 2)
     ]
     warship = Warship(blocks)
+    assert warship.evaluate_blocks(blocks)
     assert warship.size == 3
     assert warship.blocks == blocks
     assert warship.hits == 0
@@ -14,6 +15,12 @@ def test_create_warship_standard():
 
 def test_create_warship_invalid():
     blocks = []
+    with pytest.raises(ValueError):
+        Warship(blocks)
+    blocks = [(0, 0), (0, 2), (0, 3)]
+    with pytest.raises(ValueError):
+        Warship(blocks)
+    blocks = [(-1, 0), (0, 0), (1, 0)]
     with pytest.raises(ValueError):
         Warship(blocks)
 

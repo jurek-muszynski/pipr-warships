@@ -155,11 +155,11 @@ class Ai(Player):
                 key = self.get_warship_key(self.__success_hit[-1])
                 possible_locations = self.get_next_possible_location(
                     key, self.__warships[key])
-                possible_locations_cleaned = self.remove_duplicates(
+                possible_locations_cleaned_up = self.remove_duplicates(
                     possible_locations)
                 print(self.__success_hit[-1],
-                      possible_locations_cleaned, "not hit")
-                self.__next_hit = choice(possible_locations_cleaned)
+                      possible_locations_cleaned_up, "not hit")
+                self.__next_hit = choice(possible_locations_cleaned_up)
 
             return
         else:
@@ -172,11 +172,11 @@ class Ai(Player):
                 return
             possible_locations = self.get_next_possible_location(
                 size, self.__warships[size])
-            possible_locations_cleaned = self.remove_duplicates(
+            possible_locations_cleaned_up = self.remove_duplicates(
                 possible_locations)
             print(self.__success_hit[-1],
-                  possible_locations_cleaned, "hit")
-            self.__next_hit = choice(possible_locations_cleaned)
+                  possible_locations_cleaned_up, "hit")
+            self.__next_hit = choice(possible_locations_cleaned_up)
             return
 
     def smart_hit(self):

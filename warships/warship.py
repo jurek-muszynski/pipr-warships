@@ -4,22 +4,27 @@ class Warship():
     consisting of [1-5] blocks
 
     :param blocks: Represents the lists of blocks
-    :type blocks: list[int]
+    :type blocks: list[tuple[int]]
 
     :param size: Represents warship's size.
     :type size: int
 
     :param hits: Represents warship's hit count
     :type hits: int
+
+    :param hit_blocks: Represents warships blocks that were hit
+    :type hit_blocks: list[tuple[int]]
     """
 
-    def __init__(self, blocks: list[int]) -> None:
+    def __init__(self, blocks: list[tuple[int]]) -> None:
         """
         Creates an instance of a warship.
         Raises ValueError if passed blocks are invalid.
         """
         if not blocks:
             raise ValueError("Warship cannot be empty")
+        elif not self.evaluate_blocks(blocks):
+            raise ValueError("Invalid blocks")
         else:
             self.__blocks = blocks
         self.__size = len(blocks)
@@ -38,16 +43,31 @@ class Warship():
     def hits(self) -> int:
         return self.__hits
 
+    def evaluate_blocks(self, blocks) -> bool:
+        """
+        Checks if passed blocks are correctly alligned,
+        (distance between two consecutive blocks is 1)
+        """
+        for x, y in blocks:
+            if (x < 0 or y < 0):
+                return False
+        for i in range(len(blocks)-1):
+            x_i, y_i = blocks[i]
+            x_ii, y_ii = blocks[i+1]
+            if abs(x_i - x_ii) + abs(y_i - y_ii) != 1:
+                return False
+        return True
+
     def __str__(self) -> str:
         """
-        Returns a sample description of a warship:
+        Returns a simple description of a warship:
         {1-5} mast warship
         """
         return f"{len(self.__blocks)} mast warship"
 
     def was_hit(self, coors) -> bool:
         """
-        Checks if hitting the following coordinates was successful
+        Checks if shooting at the following coordinates resulted in a hit
         """
         if coors in self.__blocks and coors not in self.__hit_blocks:
             self.__hits += 1

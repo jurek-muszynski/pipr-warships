@@ -3,20 +3,6 @@ from board_io import print_board_io, print_warships_io, print_hit_warships_io
 from random import choice
 
 
-class NegativeValueError(Exception):
-    """
-    NegativeValueError Exception.
-    Raised when negative value was passed as a parameter (size, num_warships)
-
-    :param value: passed value
-    :type value: int
-    """
-
-    def __init__(self, value: int) -> None:
-        super().__init__("This value cannot be negative")
-        self.__value = value
-
-
 class InvalidWarshipCountError(Exception):
     """
     InvalidWarshipCountError Exception.
@@ -30,6 +16,20 @@ class InvalidWarshipCountError(Exception):
     def __init__(self, value: int) -> None:
         super().__init__("Cannot place this many warships")
         self.__value = value
+
+
+class InvalidWarshipError(Exception):
+    """
+    InvalidWarshipError Exception.
+    Raised when a warship cannot be placed on the board
+
+    :param warship: invalid warship
+    :type warship: Warship
+    """
+
+    def __init__(self, invalid: Warship) -> None:
+        super().__init__("Cannot place this warship")
+        self.__invalid = invalid
 
 
 class Board():
@@ -50,12 +50,12 @@ class Board():
     """
 
     def __init__(self, size: int, num_warships: int) -> None:
-        if (size < 0):
-            raise NegativeValueError(size)
+        if (size <= 0):
+            raise ValueError(size)
         else:
             self.__size = size
-        if (num_warships < 0):
-            raise NegativeValueError(num_warships)
+        if (num_warships <= 0):
+            raise ValueError(num_warships)
         elif num_warships > self.__size:
             raise InvalidWarshipCountError(num_warships)
         else:
@@ -64,15 +64,25 @@ class Board():
         self.__hit = []
 
     @property
+    def size(self) -> int:
+        return self.__size
+
+    @property
+    def num_warships(self) -> int:
+        return self.__num_warships
+
     def warships(self):
         warships_str = ""
         for warship in self.__warships:
             warships_str += f"{str(warship)} "
         return warships_str
 
-    @property
-    def size(self) -> int:
-        return self.__size
+    def evaluate_warship(self, warship_to_add: Warship):
+        if warship_to_add.size > self.__size:
+            raise InvalidWarshipError(warship_to_add)
+        for x, y in warship_to_add.blocks:
+            if x >= self.__size or y >= self.__size:
+                raise InvalidWarshipError(warship_to_add)
 
     def _is_location_available(self, x, y):
         for warship in self.__warships:
@@ -128,6 +138,7 @@ class Board():
 
     def add_warship(self, locations) -> None:
         warship_to_add = Warship(locations)
+        self.evaluate_warship(warship_to_add)
         self.__warships.append(
             warship_to_add
         )

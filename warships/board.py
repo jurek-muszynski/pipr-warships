@@ -1,6 +1,7 @@
 from warship import Warship
 from board_io import print_board_io, print_warships_io, print_hit_warships_io
 from random import choice
+from consts import MAX_NUM_OF_WARSHIPS
 
 
 class InvalidWarshipCountError(Exception):
@@ -126,7 +127,8 @@ class Board():
 
     def draw_locations(self):
         warships_sizes = [size for size in range(
-            self.__size if self.__size < 5 else 5, 0, -1)]
+            self.__size if self.__size < MAX_NUM_OF_WARSHIPS
+            else MAX_NUM_OF_WARSHIPS, 0, -1)]
         warships_to_add = self.__num_warships
         warships_added = 0
         while warships_added < warships_to_add:

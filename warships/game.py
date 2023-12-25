@@ -2,6 +2,7 @@ from board import Board
 from player import Player, Ai
 from time import sleep
 from os import system
+from consts import MAX_NUM_OF_WARSHIPS
 
 
 class GameEnded(Exception):
@@ -17,10 +18,10 @@ class Game():
         self.__board_size = board_size
         self.__player = Player(
             Board(self.__board_size, self.__board_size
-                  if self.__board_size < 5 else 5))
+                  if self.__board_size < MAX_NUM_OF_WARSHIPS else MAX_NUM_OF_WARSHIPS))
         self.__ai = Ai(
             Board(self.__board_size, self.__board_size
-                  if self.__board_size < 5 else 5))
+                  if self.__board_size < MAX_NUM_OF_WARSHIPS else MAX_NUM_OF_WARSHIPS))
         self.__ai.board.draw_locations()
 
     def players_turn(self):

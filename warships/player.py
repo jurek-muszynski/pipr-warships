@@ -3,6 +3,7 @@ from pick import pick
 from board import Board
 from time import sleep
 from os import system
+from consts import MAX_NUM_OF_WARSHIPS
 
 
 class ForbiddenInputError(Exception):
@@ -16,7 +17,8 @@ class Player():
         self.__board_size = self.__board.size
         self.__warship_types = {
             size: 1 for size in range(board.size if
-                                      board.size < 5 else 5, 0, -1)}
+                                      board.size < MAX_NUM_OF_WARSHIPS
+                                      else MAX_NUM_OF_WARSHIPS, 0, -1)}
 
     @property
     def board_size(self) -> int:

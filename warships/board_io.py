@@ -1,4 +1,11 @@
-def print_legend_horizontal_io(size):
+from warship import Warship
+
+
+def print_legend_horizontal_io(size: int) -> str:
+    """
+    Returns horizontal board's legend in the form of
+    A B C D ..., depending on its isze
+    """
     legend_horizontal = [chr(num+65) for num in range(0, size)]
     legend_horizontal_as_str = "  "
     for letter in legend_horizontal:
@@ -6,7 +13,14 @@ def print_legend_horizontal_io(size):
     return legend_horizontal_as_str
 
 
-def print_board_io(size, locations_warships, locations_hit, show_warships):
+def print_board_io(size: int, locations_warships: list[tuple[int]], locations_hit: list[tuple[int]], show_warships: bool) -> str:
+    """
+    Returns the board's string representation.
+    [#] for hits missed,
+    [o] for warships,
+    [x] for warships hit,
+    [ ] for empty locations or hidden warships,
+    """
     board_str = print_legend_horizontal_io(size)
     board_str += "\n"
     for index in range(size):
@@ -28,7 +42,12 @@ def print_board_io(size, locations_warships, locations_hit, show_warships):
     return board_str
 
 
-def print_warships_io(warships):
+def print_warships_io(warships: list[Warship]) -> str:
+    """
+    Returns a string representation of all warships and
+    the number of their type's occurances on the board
+    e.g. 1 mast warship: x1
+    """
     warships_sizes = [
         warship.size for warship in warships if not warship.was_sunk()]
     warships_sizes_dict = {size: warships_sizes.count(
@@ -39,7 +58,13 @@ def print_warships_io(warships):
     return warship_str
 
 
-def print_hit_warships_io(warships, coordinates):
+def print_hit_warships_io(warships: list[Warship], coordinates: list[tuple[int]]) -> tuple[bool, bool, int]:
+    """
+    Prints appropriate message depending on the
+    result of the hit
+    Returns a tuple of 3 values describing the hit's result
+    (was_hit, was_sunk, hit_warship_size)
+    """
     for warship in warships:
         if warship.was_hit(coordinates):
             if warship.was_sunk():

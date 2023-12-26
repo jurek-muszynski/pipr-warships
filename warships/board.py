@@ -16,7 +16,7 @@ class InvalidWarshipCountError(Exception):
 
     def __init__(self, value: int) -> None:
         super().__init__("Cannot place this many warships")
-        self.__value = value
+        self.value = value
 
 
 class InvalidWarshipError(Exception):
@@ -30,7 +30,21 @@ class InvalidWarshipError(Exception):
 
     def __init__(self, invalid: Warship) -> None:
         super().__init__("Cannot place this warship")
-        self.__invalid = invalid
+        self.invalid = invalid
+
+
+class CoordinatesOutOfRangeError(Exception):
+    """
+   CoordinatesOutOfRangeError Exception.
+   Raised when passed coordinates aren't within the board
+
+   :param coordinates: invalid coordinates
+   :type coordinates: tuple[int]
+   """
+
+    def __init__(self, coordinates: tuple[int]) -> None:
+        super().__init__("Coordinates out of range")
+        self.cordinates = coordinates
 
 
 class Board():
@@ -43,11 +57,6 @@ class Board():
     :param num_warships: number of warships situated on the board
     :type num_warships: int
 
-    :param locations_warships: locations of the warships
-    :type locations_warships: list[Warship]
-
-    :param warship_types: amount of specific warship types on the board
-    :type warship_types: dict[int]
     """
 
     def __init__(self, size: int, num_warships: int) -> None:
@@ -71,6 +80,13 @@ class Board():
     @property
     def num_warships(self) -> int:
         return self.__num_warships
+
+    def all_locations(self):
+        locations = []
+        for x in range(self.__size):
+            for y in range(self.__size):
+                locations.append((x, y))
+        return locations
 
     def warships(self):
         warships_str = ""
@@ -145,31 +161,23 @@ class Board():
             warship_to_add
         )
 
-    def warship_types(self) -> dict[int]:
-        warships_sizes = [
-            warship.size for warship in
-            self.__warships if not warship.was_sunk()]
-        warships_sizes_dict = {size: warships_sizes.count(
-            size) for size in warships_sizes}
-        return warships_sizes_dict
-
     def all_sunk(self) -> bool:
         for warship in self.__warships:
             if not warship.was_sunk():
                 return False
-        return True
+        return len(self.__warships) > 0
 
     def hit(self, coordinates):
         x, y = coordinates
-        if (x, y) not in self.__hit:
-            self.__hit.append((x, y))
+        if (x, y) not in self.all_locations():
+            raise CoordinatesOutOfRangeError((x, y))
         else:
-            print("You've already hit here before")
-            return (False, False, 0)
-        return print_hit_warships_io(self.__warships, coordinates)
-
-    def hit_warships(self, coordinates):
-        return print_hit_warships_io(self.__warships, coordinates)
+            if (x, y) not in self.__hit:
+                self.__hit.append((x, y))
+            else:
+                print("You've already hit here before")
+                return (False, False, 0)
+            return print_hit_warships_io(self.__warships, coordinates)
 
     def warships_str(self):
         return print_warships_io(self.__warships)

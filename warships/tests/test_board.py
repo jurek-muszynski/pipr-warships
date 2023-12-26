@@ -140,7 +140,7 @@ def test_hit_warship_std():
     board = Board(2, 2)
     board.add_warship([(0, 0), (0, 1)])
     assert board.hit((0, 1)) == (True, False, 2)
-    board.hit((0, 0)) == (True, True, 2)
+    assert board.hit((0, 0)) == (True, True, 2)
 
 
 def test_hit_warship_out_of_range():
@@ -152,14 +152,14 @@ def test_hit_warship_out_of_range():
 def test_hit_warship_miss():
     board = Board(2, 2)
     board.add_warship([(0, 0)])
-    board.hit((0, 1)) == (False, False, 0)
+    assert board.hit((0, 1)) == (False, False, 0)
 
 
 def test_hit_repeated():
     board = Board(2, 2)
     board.add_warship([(0, 0), (0, 1)])
-    board.hit((0, 0)) == (True, False, 2)
-    board.hit((0, 0)) == (False, False, 0)
+    assert board.hit((0, 0)) == (True, False, 2)
+    assert board.hit((0, 0)) == (False, False, 0)
 
 
 def test_hit_all_sunk_std():

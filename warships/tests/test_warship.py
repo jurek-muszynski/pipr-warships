@@ -57,7 +57,7 @@ def test_warship_hit_same_block():
     assert warship.hits == 1
 
 
-def test_warship_hit_sunk():
+def test_warship_hit_sink():
     blocks = [
         (0, 0), (0, 1), (0, 2)
     ]

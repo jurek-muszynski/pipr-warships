@@ -132,6 +132,9 @@ class Ai(Player):
             for hit in hits:
                 if hit not in locations:
                     valid = False
+            for hit in self.__hit:
+                if hit not in hits and hit in locations:
+                    valid = False
             if valid:
                 valid_locations.append(locations)
 

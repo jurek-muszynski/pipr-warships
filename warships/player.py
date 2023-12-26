@@ -6,10 +6,6 @@ from os import system
 from consts import MAX_NUM_OF_WARSHIPS
 
 
-class ForbiddenInputError(Exception):
-    pass
-
-
 class Player():
 
     def __init__(self, board) -> None:
@@ -36,8 +32,6 @@ class Player():
         x = str.title(hit_input[0])
         x = ord(x)-65
         y = int(hit_input[1])
-        if x < 0 or x >= self.__board_size or y < 0 or y >= self.__board_size:
-            raise ForbiddenInputError()
         return x, y
 
     def _format_locations(self, locations):

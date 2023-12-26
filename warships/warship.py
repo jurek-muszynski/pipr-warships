@@ -45,7 +45,7 @@ class Warship():
 
     def evaluate_blocks(self, blocks) -> bool:
         """
-        Checks if passed blocks are correctly alligned,
+        Checks if passed blocks are correctly alligned
         (distance between two consecutive blocks is 1)
         """
         for x, y in blocks:

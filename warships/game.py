@@ -1,4 +1,4 @@
-from board import Board
+from board import Board, CoordinatesOutOfRangeError
 from player import Player, Ai
 from time import sleep
 from os import system
@@ -18,10 +18,12 @@ class Game():
         self.__board_size = board_size
         self.__player = Player(
             Board(self.__board_size, self.__board_size
-                  if self.__board_size < MAX_NUM_OF_WARSHIPS else MAX_NUM_OF_WARSHIPS))
+                  if self.__board_size < MAX_NUM_OF_WARSHIPS
+                  else MAX_NUM_OF_WARSHIPS))
         self.__ai = Ai(
             Board(self.__board_size, self.__board_size
-                  if self.__board_size < MAX_NUM_OF_WARSHIPS else MAX_NUM_OF_WARSHIPS))
+                  if self.__board_size < MAX_NUM_OF_WARSHIPS
+                  else MAX_NUM_OF_WARSHIPS))
         self.__ai.board.draw_locations()
 
     def players_turn(self):
@@ -30,9 +32,16 @@ class Game():
         print(self.__ai.board.warships_str())
         print("AI's BOARD")
         print(self.__ai.board.print_board())
-        hit = self.__player.hit(
-            input("Where would you like to hit: "))
-        self.__ai.board.hit(hit)
+        while True:
+            try:
+                hit = self.__player.hit(
+                    input("Where would you like to hit: "))
+                self.__ai.board.hit(hit)
+                break
+            except CoordinatesOutOfRangeError as e:
+                print(str(e))
+            except Exception:
+                print("Invalid input")
         self.result_player()
 
     def ai_turn(self):
@@ -75,7 +84,7 @@ class Game():
         self.__player.place_warships()
         while True:
             try:
-                # self.players_turn()
+                self.players_turn()
                 self.ai_turn()
             except GameEnded:
                 sleep(1)

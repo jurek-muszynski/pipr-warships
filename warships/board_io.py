@@ -4,7 +4,7 @@ from warship import Warship
 def print_legend_horizontal_io(size: int) -> str:
     """
     Returns horizontal board's legend in the form of
-    A B C D ..., depending on its isze
+    A B C D ..., depending on its size
     """
     legend_horizontal = [chr(num+65) for num in range(0, size)]
     legend_horizontal_as_str = "  "
@@ -19,7 +19,7 @@ def print_board_io(size: int, locations_warships: list[tuple[int]], locations_hi
     [#] for hits missed,
     [o] for warships,
     [x] for warships hit,
-    [ ] for empty locations or hidden warships,
+    [ ] for empty locations or hidden warships
     """
     board_str = print_legend_horizontal_io(size)
     board_str += "\n"

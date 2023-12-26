@@ -18,8 +18,11 @@ class Warship():
 
     def __init__(self, blocks: list[tuple[int]]) -> None:
         """
-        Creates an instance of a warship.
+        Creates an instance of the warship class.
         Raises ValueError if passed blocks are invalid.
+
+        :param blocks: blocks of coordinates, that a warships is made of
+        :type blocks: list[tuple[int]]
         """
         if not blocks:
             raise ValueError("Warship cannot be empty")
@@ -43,10 +46,13 @@ class Warship():
     def hits(self) -> int:
         return self.__hits
 
-    def evaluate_blocks(self, blocks) -> bool:
+    def evaluate_blocks(self, blocks: list[tuple[int]]) -> bool:
         """
         Checks if passed blocks are correctly alligned
         (distance between two consecutive blocks is 1)
+
+        :param blocks: blocks of coordinates
+        :type blocks: list[tuple[int]]
         """
         for x, y in blocks:
             if (x < 0 or y < 0):
@@ -65,9 +71,12 @@ class Warship():
         """
         return f"{len(self.__blocks)} mast warship"
 
-    def was_hit(self, coors) -> bool:
+    def was_hit(self, coors: tuple[int]) -> bool:
         """
         Checks if shooting at the following coordinates resulted in a hit
+
+        :param coors: coordinates of a cell e.g. (1,1)
+        :type coors: tuple[int]
         """
         if coors in self.__blocks and coors not in self.__hit_blocks:
             self.__hits += 1

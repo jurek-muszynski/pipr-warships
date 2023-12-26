@@ -71,6 +71,12 @@ class Board():
         Raises ValueError if number of warships is less/equal 0.
         Raises InvalidWarshipCountError if number of warships greater than size.
         Initially 'warships' and 'hit' lists are empty
+
+        :param size: board's size
+        :type size: int
+
+        :param num_warships: number of warships on the board
+        :type num_warships: int
         """
         if (size <= 0):
             raise ValueError(size)
@@ -119,6 +125,9 @@ class Board():
         Raises InvalidWarshipError if warship.size > size
         Raises InvalidWarshipError if any of its blocks' coordinates
         are out of board's range
+
+        :param warship_to_add: warship to be added to the board
+        :type warship_to_add: Warship
         """
         if warship_to_add.size > self.__size:
             raise InvalidWarshipError(warship_to_add)
@@ -130,6 +139,12 @@ class Board():
         """
         Checks if a specified pair of coordinates is available on the board
         (no warships' blocks there)
+
+        :param x: horizontal axis coordinate
+        :type x: int
+
+        :param y: vertical axis coordinate
+        :type y: int
         """
         for warship in self.__warships:
             for x_warship, y_warship in warship.blocks:
@@ -139,8 +154,11 @@ class Board():
 
     def get_available_locations_horizontal(self, warship_size: int) -> list[list[tuple[int]]]:
         """
-        Returns a list of all possible horizontal locations of warships
+        Returns a list of all possible horizontal locations for warships
         of a specified size
+
+        :param warship_size: size of a warship
+        :type warship_size: int
         """
         locations = []
         for x in range(self.__size):
@@ -155,8 +173,11 @@ class Board():
 
     def get_available_locations_vertical(self, warship_size: int) -> list[list[tuple[int]]]:
         """
-        Returns a list of all possible vertical locations of warships
+        Returns a list of all possible vertical locations for warships
         of a specified size
+
+        :param warship_size: size of a warship
+        :type warship_size: int
         """
         locations = []
         for x in range(self.__size - warship_size + 1):
@@ -173,6 +194,9 @@ class Board():
         """
         Randomly chooses one of all possible locations
         for a warship of a specified size
+
+        :param warship_size: size of a warship
+        :type warship_size: int
         """
         available_locations_h = self.get_available_locations_horizontal(
             warship_size)
@@ -200,7 +224,10 @@ class Board():
 
     def add_warship(self, locations: list[tuple[int]]) -> None:
         """
-        Adds a warship of specified coordinates to the board
+        Adds a warship of specified blocks of coordinates to the board
+
+        :param locations: blocks of coordinates that a warship is made of
+        :type locations: list[tuple[int]]
         """
         warship_to_add = Warship(locations)
         self.evaluate_warship(warship_to_add)
@@ -223,8 +250,11 @@ class Board():
         Hits specified coordinates.
         Prints appropriate message depending on the
         result of that shot
-        Returns a tuple of 3 values describing that shot's result
+        Returns a tuple of 3 values describing the shot's result
         (was_hit, was_sunk, hit_warship_size)
+
+        :param coordinates: coordinates of a cell on the board
+        :type coordinates: tuple[int]
         """
         x, y = coordinates
         if (x, y) not in self.all_locations():
@@ -251,6 +281,9 @@ class Board():
         If show_warships param is set to True, then it
         prints the locations of warships, otherwise
         they remain hidden
+
+        :param show_warships: determines the visibility of printed warships
+        :type show_warships: bool
         """
         size = self.__size
         locations_warships = []

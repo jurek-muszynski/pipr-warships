@@ -163,8 +163,18 @@ class Ai(Player):
             if was_sunk:
                 for coors in self.__warships[size]:
                     self.__success_hit.remove(coors)
-                self.__next_hit = 0
-                return
+                if len(self.__success_hit) == 0:
+                    self.__next_hit = 0
+                else:
+                    key = self.get_warship_key(self.__success_hit[-1])
+                    possible_locations = self.get_next_possible_location(
+                        key, self.__warships[key])
+                    possible_locations_cleaned_up = self.remove_duplicates(
+                        possible_locations)
+                    # print(
+                    #     self.__success_hit[-1], possible_locations_cleaned_up, "sunk")
+                    self.__next_hit = choice(possible_locations_cleaned_up)
+                    return
             possible_locations = self.get_next_possible_location(
                 size, self.__warships[size])
             possible_locations_cleaned_up = self.remove_duplicates(

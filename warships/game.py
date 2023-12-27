@@ -44,17 +44,19 @@ class Game():
             except Exception:
                 print("Invalid input")
         self.result_player()
+        sleep(1)
 
     def ai_turn(self):
         print("\nAI'S TURN")
         sleep(1)
-        print("YOUR BOARD")
-        print(self.__player.board.print_board(True))
         hit = self.__ai.smart_hit()
         print(chr(int(hit[0])+65) + str(hit[1]))
         sleep(1)
         self.__ai.set_last_hit(self.__player.board.hit(hit))
+        print("\nYOUR BOARD")
+        print(self.__player.board.print_board(True))
         self.result_ai()
+        sleep(1)
 
     def result_player(self):
         if self.__ai.board.all_sunk():

@@ -46,7 +46,7 @@ def instructions():
     print(
         "4 > # will be displayed in the chosen coordinates, if the hit a miss\n")
     sleep(1)
-    input("Press any key to continue: ")
+    input("Press Enter to continue: ")
     clear()
 
 

@@ -165,6 +165,7 @@ class Ai(Player):
                     self.__success_hit.remove(coors)
                 if len(self.__success_hit) == 0:
                     self.__next_hit = 0
+                    return
                 else:
                     key = self.get_warship_key(self.__success_hit[-1])
                     possible_locations = self.get_next_possible_location(

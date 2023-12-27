@@ -152,8 +152,8 @@ class Ai(Player):
                     key, self.__warships[key])
                 possible_locations_cleaned_up = self.remove_duplicates(
                     possible_locations)
-                print(self.__success_hit[-1],
-                      possible_locations_cleaned_up, "not hit")
+                # print(self.__success_hit[-1],
+                #       possible_locations_cleaned_up, "not hit")
                 self.__next_hit = choice(possible_locations_cleaned_up)
 
             return

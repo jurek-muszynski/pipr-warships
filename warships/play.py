@@ -1,6 +1,7 @@
 from game import Game
 from time import sleep
 from os import system
+from system import clear
 
 
 def menu():
@@ -16,7 +17,7 @@ def menu():
 def start():
     print("\nLet the game begin!")
     sleep(1)
-    system("clear")
+    clear()
     while True:
         try:
             board_size = input("Enter the size of your board: ")
@@ -28,7 +29,7 @@ def start():
 
 
 def instructions():
-    system("clear")
+    clear()
     print("Instructions: ")
     sleep(1)
     print("\nBOARD PREP\n")
@@ -46,7 +47,7 @@ def instructions():
         "4 > # will be displayed in the chosen coordinates, if the hit a miss\n")
     sleep(1)
     input("Press any key to continue: ")
-    system("clear")
+    clear()
 
 
 def main():
@@ -63,7 +64,7 @@ def main():
                 sleep(1)
                 print("Thanks for playing! See you soon :)")
                 sleep(1)
-                system("clear")
+                clear()
                 break
             case _:
                 print("Invalid choice. Enter a number between 1 and 3\n")

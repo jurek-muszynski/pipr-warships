@@ -4,6 +4,7 @@ from board import Board
 from time import sleep
 from os import system
 from consts import MAX_NUM_OF_WARSHIPS
+from system import clear
 
 
 class Player():
@@ -62,7 +63,7 @@ class Player():
                 added += 1
                 print(self.board.print_board(True))
                 sleep(1)
-                system("clear")
+                clear()
 
 
 class Ai(Player):

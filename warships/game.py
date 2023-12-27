@@ -3,6 +3,7 @@ from player import Player, Ai
 from time import sleep
 from os import system
 from consts import MAX_NUM_OF_WARSHIPS
+from system import clear
 
 
 class GameEnded(Exception):
@@ -58,11 +59,11 @@ class Game():
     def result_player(self):
         if self.__ai.board.all_sunk():
             sleep(1)
-            system("clear")
+            clear()
             sleep(1)
             print("ALL AI'S SHIPS SANK")
             sleep(1)
-            system("clear")
+            clear()
             sleep(1)
             print("YOU'VE WON!")
             raise GameEnded()
@@ -71,10 +72,10 @@ class Game():
     def result_ai(self):
         if self.__player.board.all_sunk():
             sleep(1)
-            system("clear")
+            clear()
             print("ALL YOUR SHIPS SANK!")
             sleep(1)
-            system("clear")
+            clear()
             sleep(1)
             print("YOU'VE LOST")
             raise GameEnded()
@@ -88,5 +89,5 @@ class Game():
                 self.ai_turn()
             except GameEnded:
                 sleep(1)
-                system("clear")
+                clear()
                 break

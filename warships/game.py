@@ -84,7 +84,7 @@ class Game():
         self.__player.place_warships()
         while True:
             try:
-                # self.players_turn()
+                self.players_turn()
                 self.ai_turn()
             except GameEnded:
                 sleep(1)

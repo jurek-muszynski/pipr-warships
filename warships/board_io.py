@@ -68,9 +68,9 @@ def print_hit_warships_io(warships: list[Warship], coordinates: list[tuple[int]]
     for warship in warships:
         if warship.was_hit(coordinates):
             if warship.was_sunk():
-                print(f"You've sunk a {str(warship)}")
+                print(f"{str(warship)} sunk")
                 return (True, True, warship.size)
-            print(f"You've hit a {str(warship)}")
+            print(f"{str(warship)} hit")
             return (True, False, warship.size)
     print("Miss")
     return (False, False, 0)

@@ -10,15 +10,10 @@ class Player():
 
     def __init__(self, board) -> None:
         self.__board = board
-        self.__board_size = self.__board.size
         self.__warship_types = {
             size: 1 for size in range(board.size if
                                       board.size < MAX_NUM_OF_WARSHIPS
                                       else MAX_NUM_OF_WARSHIPS, 0, -1)}
-
-    @property
-    def board_size(self) -> int:
-        return self.__board_size
 
     @property
     def board(self) -> Board:
@@ -85,16 +80,16 @@ class Ai(Player):
     def draw_coordinates(self):
         all_locations = []
         warships_coordinates = sum(self.__warships.values(), [])
-        for x in range(self.board_size):
-            for y in range(self.board_size):
+        for x in range(self.board.size):
+            for y in range(self.board.size):
                 if (x, y) not in warships_coordinates:
                     all_locations.append((x, y))
         return choice(self.remove_duplicates(all_locations))
 
     def get_possible_locations_horizontal(self, warship_size):
         locations = []
-        for x in range(self.board_size):
-            for y in range(self.board_size - warship_size + 1):
+        for x in range(self.board.size):
+            for y in range(self.board.size - warship_size + 1):
                 locations_inner = []
                 for size in range(warship_size):
                     locations_inner.append((x, y+size))
@@ -104,8 +99,8 @@ class Ai(Player):
 
     def get_possible_locations_vertical(self, warship_size):
         locations = []
-        for x in range(self.board_size - warship_size + 1):
-            for y in range(self.board_size):
+        for x in range(self.board.size - warship_size + 1):
+            for y in range(self.board.size):
                 locations_inner = []
                 for size in range(warship_size):
                     locations_inner.append((x+size, y))
@@ -173,8 +168,8 @@ class Ai(Player):
                 size, self.__warships[size])
             possible_locations_cleaned_up = self.remove_duplicates(
                 possible_locations)
-            print(self.__success_hit[-1],
-                  possible_locations_cleaned_up, "hit")
+            # print(self.__success_hit[-1],
+            #       possible_locations_cleaned_up, "hit")
             self.__next_hit = choice(possible_locations_cleaned_up)
             return
 

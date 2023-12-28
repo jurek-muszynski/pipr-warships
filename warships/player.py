@@ -44,6 +44,7 @@ class Player():
     def place_warships(self):
         sleep(1)
         for size in self.__warship_types:
+            clear()
             to_add = self.__warship_types.get(size)
             added = 0
             while added < to_add:
@@ -63,8 +64,7 @@ class Player():
                 added += 1
                 print(self.board.print_board(True))
                 sleep(1)
-                clear()
-
+        clear()
 
 class Ai(Player):
 

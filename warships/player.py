@@ -2,7 +2,6 @@ from random import choice
 from pick import pick
 from board import Board
 from time import sleep
-from os import system
 from consts import MAX_NUM_OF_WARSHIPS
 from system import clear
 
@@ -65,6 +64,7 @@ class Player():
                 print(self.board.print_board(True))
                 sleep(1)
         clear()
+
 
 class Ai(Player):
 

@@ -75,7 +75,7 @@ class Ai(Player):
         self.__warships = {size: [] for size in self.warship_types.keys()}
         self.__next_hit = 0
 
-    def remove_duplicates(self, locations):
+    def remove_hit_before(self, locations):
         return [coors for coors in locations if coors not in self.__hit]
 
     def draw_coordinates(self):
@@ -85,7 +85,7 @@ class Ai(Player):
             for y in range(self.board.size):
                 if (x, y) not in warships_coordinates:
                     all_locations.append((x, y))
-        return choice(self.remove_duplicates(all_locations))
+        return choice(self.remove_hit_before(all_locations))
 
     def get_possible_locations_horizontal(self, warship_size):
         locations = []
@@ -141,21 +141,23 @@ class Ai(Player):
             if coors in values:
                 return key
 
-    def set_last_hit(self, last_hit):
+    def set_next_hit_with_key(self, key):
+        possible_locations = self.get_next_possible_location(
+            key, self.__warships[key])
+        possible_locations_cleaned_up = self.remove_hit_before(
+            possible_locations)
+        # print(self.__success_hit[-1],
+        #       possible_locations_cleaned_up)
+        return choice(possible_locations_cleaned_up)
+
+    def set_next_hit(self, last_hit):
         was_hit, was_sunk, size = last_hit
         if not was_hit:
             if self.__success_hit == []:
                 self.__next_hit = self.draw_coordinates()
             else:
-                key = self.get_warship_key(self.__success_hit[-1])
-                possible_locations = self.get_next_possible_location(
-                    key, self.__warships[key])
-                possible_locations_cleaned_up = self.remove_duplicates(
-                    possible_locations)
-                # print(self.__success_hit[-1],
-                #       possible_locations_cleaned_up, "not hit")
-                self.__next_hit = choice(possible_locations_cleaned_up)
-
+                self.__next_hit = self.set_next_hit_with_key(
+                    self.get_warship_key(self.__success_hit[-1]))
             return
         else:
             self.__success_hit.append(self.__hit[-1])
@@ -167,22 +169,10 @@ class Ai(Player):
                     self.__next_hit = 0
                     return
                 else:
-                    key = self.get_warship_key(self.__success_hit[-1])
-                    possible_locations = self.get_next_possible_location(
-                        key, self.__warships[key])
-                    possible_locations_cleaned_up = self.remove_duplicates(
-                        possible_locations)
-                    # print(
-                    #     self.__success_hit[-1], possible_locations_cleaned_up, "sunk")
-                    self.__next_hit = choice(possible_locations_cleaned_up)
+                    self.__next_hit = self.set_next_hit_with_key(
+                        self.get_warship_key(self.__success_hit[-1]))
                     return
-            possible_locations = self.get_next_possible_location(
-                size, self.__warships[size])
-            possible_locations_cleaned_up = self.remove_duplicates(
-                possible_locations)
-            # print(self.__success_hit[-1],
-            #       possible_locations_cleaned_up, "hit")
-            self.__next_hit = choice(possible_locations_cleaned_up)
+            self.__next_hit = self.set_next_hit_with_key(size)
             return
 
     def smart_hit(self):

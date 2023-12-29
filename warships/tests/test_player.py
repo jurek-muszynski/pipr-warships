@@ -56,10 +56,10 @@ def test_create_ai_player_invalid():
         Ai(Board(0, 0))
 
 
-def test_ai_remove_duplicates_no_hits(monkeypatch):
+def test_ai_remove_hit_before_no_hits(monkeypatch):
     board = Board(2, 2)
     ai = Ai(board)
-    assert ai.remove_duplicates([(0, 0)]) == [(0, 0)]
+    assert ai.remove_hit_before([(0, 0)]) == [(0, 0)]
 
 
 def test_ai_smart_hit_no_hits(monkeypatch):

@@ -7,15 +7,14 @@ from consts import MAX_NUM_OF_WARSHIPS
 class InvalidWarshipCountError(Exception):
     """
     InvalidWarshipCountError Exception.
-    Raised when this many warships cannot be placed on the board
+    Raised when that many warships cannot be placed on the board
 
     :param value: passed value
     :type value: int
-
     """
 
     def __init__(self, value: int) -> None:
-        super().__init__("Cannot place this many warships")
+        super().__init__("Cannot place that many warships")
         self.value = value
 
 
@@ -29,7 +28,7 @@ class InvalidWarshipError(Exception):
     """
 
     def __init__(self, invalid: Warship) -> None:
-        super().__init__("Cannot place this warship")
+        super().__init__("Cannot place that warship")
         self.invalid = invalid
 
 
@@ -39,10 +38,10 @@ class CoordinatesOutOfRangeError(Exception):
    Raised when passed coordinates aren't within the board
 
    :param coordinates: invalid coordinates
-   :type coordinates: tuple[int]
+   :type coordinates: tuple[int,int]
    """
 
-    def __init__(self, coordinates: tuple[int]) -> None:
+    def __init__(self, coordinates: tuple[int, int]) -> None:
         super().__init__("Coordinates out of range")
         self.cordinates = coordinates
 
@@ -61,7 +60,7 @@ class Board():
     :type warships: list[Warship]
 
     :param hit: hit coordinates
-    :type hit: list[tuple[int]]
+    :type hit: list[tuple[int, int]]
     """
 
     def __init__(self, size: int, num_warships: int) -> None:
@@ -99,7 +98,7 @@ class Board():
     def num_warships(self) -> int:
         return self.__num_warships
 
-    def all_locations(self) -> list[tuple[int]]:
+    def all_locations(self) -> list[tuple[int, int]]:
         """
         Returns a list of all possible coordinates on the board e.g. (x,y)
         """
@@ -152,7 +151,8 @@ class Board():
                     return False
         return True
 
-    def get_available_locations_horizontal(self, warship_size: int) -> list[list[tuple[int]]]:
+    def get_available_locations_horizontal(self,
+                                           warship_size: int) -> list[list[tuple[int, int]]]:
         """
         Returns a list of all possible horizontal locations for warships
         of a specified size
@@ -171,7 +171,8 @@ class Board():
                     locations.append(locations_inner)
         return locations
 
-    def get_available_locations_vertical(self, warship_size: int) -> list[list[tuple[int]]]:
+    def get_available_locations_vertical(self,
+                                         warship_size: int) -> list[list[tuple[int, int]]]:
         """
         Returns a list of all possible vertical locations for warships
         of a specified size
@@ -190,7 +191,7 @@ class Board():
                     locations.append(locations_inner)
         return locations
 
-    def draw_location(self, warship_size: int) -> list[tuple[int]]:
+    def draw_location(self, warship_size: int) -> list[tuple[int, int]]:
         """
         Randomly chooses one of all possible locations
         for a warship of a specified size
@@ -222,12 +223,12 @@ class Board():
             self.add_warship(drawed_locations)
             warships_added += 1
 
-    def add_warship(self, locations: list[tuple[int]]) -> None:
+    def add_warship(self, locations: list[tuple[int, int]]) -> None:
         """
         Adds a warship of specified blocks of coordinates to the board
 
         :param locations: blocks of coordinates that a warship is made of
-        :type locations: list[tuple[int]]
+        :type locations: list[tuple[int, int]]
         """
         warship_to_add = Warship(locations)
         self.evaluate_warship(warship_to_add)
@@ -245,7 +246,7 @@ class Board():
                 return False
         return len(self.__warships) > 0
 
-    def hit(self, coordinates: tuple[int]) -> tuple[bool, bool, int]:
+    def hit(self, coordinates: tuple[int, int]) -> tuple[bool, bool, int]:
         """
         Hits specified coordinates.
         Prints appropriate message depending on the
@@ -254,7 +255,7 @@ class Board():
         (was_hit, was_sunk, hit_warship_size)
 
         :param coordinates: coordinates of a cell on the board
-        :type coordinates: tuple[int]
+        :type coordinates: tuple[int, int]
         """
         x, y = coordinates
         if (x, y) not in self.all_locations():

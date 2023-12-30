@@ -1,7 +1,6 @@
 from board import Board, CoordinatesOutOfRangeError
 from player import Player, Ai
 from time import sleep
-from os import system
 from consts import MAX_NUM_OF_WARSHIPS
 from system import clear
 

@@ -1,6 +1,5 @@
 from game import Game
 from time import sleep
-from os import system
 from system import clear
 
 
@@ -21,7 +20,7 @@ def start():
     while True:
         try:
             board_size = input("Enter the size of your board: ")
-            game = Game(int(board_size))
+            game = Game(board_size)
             break
         except ValueError:
             print("Invalid board size")

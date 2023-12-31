@@ -6,6 +6,16 @@ from consts import MAX_NUM_OF_WARSHIPS
 from system import clear
 
 
+class InvalidHitInputError(Exception):
+    """
+    InvalidHitInputError Exception.\n
+    Raised if entered hit is invalid
+    """
+
+    def __init__(self) -> None:
+        super().__init__("Invalid Input")
+
+
 class Player():
     """
     Player class. Contains attributes:
@@ -14,7 +24,7 @@ class Player():
     :type board: Board
 
     :param warship_types: types of warships with their count on the board
-    :type wraship_types: dict[int, int]
+    :type warship_types: dict[int, int]
     """
 
     def __init__(self, board: Board) -> None:
@@ -41,14 +51,21 @@ class Player():
 
     def hit(self, hit_input: str) -> tuple[int, int]:
         """
-        Parses a hit entered by the user to a tuple of integers
+        Parses a hit entered by the user to a tuple of integers\n
+        Raises InvalidHitInputError if entered hit is invalid
 
         :param hit_input: hit entered by the user e.g. A0 -> (0,0)
         :type hit: str
+
         """
         x = str.title(hit_input[0])
+        if not x.isalpha():
+            raise InvalidHitInputError()
         x = ord(x)-65
-        y = int(hit_input[1])
+        try:
+            y = int(hit_input[1:])
+        except ValueError:
+            raise InvalidHitInputError()
         return x, y
 
     def _format_locations(self,
@@ -159,7 +176,8 @@ class Ai(Player):
                     all_locations.append((x, y))
         return choice(self.remove_hit_before(all_locations))
 
-    def get_possible_locations_horizontal(self, warship_size: int) -> list[tuple[int, int]]:
+    def get_possible_locations_horizontal(self,
+                                          warship_size: int) -> list[tuple[int, int]]:
         """
         Returns a list of all possible horizontal locations for warships
         of a specified size
@@ -177,7 +195,8 @@ class Ai(Player):
                     locations.append(locations_inner)
         return locations
 
-    def get_possible_locations_vertical(self, warship_size: int) -> list[tuple[int, int]]:
+    def get_possible_locations_vertical(self,
+                                        warship_size: int) -> list[tuple[int, int]]:
         """
         Returns a list of all possible vertical locations for warships
         of a specified size
@@ -199,7 +218,7 @@ class Ai(Player):
                                 hits: list[tuple[int, int]]):
         """
         Returns a flattened list of all locations, without
-        those already hit at, so that there is no nesting inside
+        those already hit, so that there is no nesting inside
 
         :param locations: nested list of locations
         :type locations: list[list[tuple[int,int]]]
@@ -255,8 +274,8 @@ class Ai(Player):
 
     def set_next_hit_with_key(self, key: int) -> tuple[int, int]:
         """
-        Returns a randomly chosen next possible location
-        of a warship
+        Returns a chosen next possible location
+        of a warship, which was hit
 
         :param key: size of a warship, hit before
         :type key: int
@@ -265,17 +284,11 @@ class Ai(Player):
             key, self.__warships_hit[key])
         possible_locations_cleaned_up = self.remove_hit_before(
             possible_locations)
-        # print(self.__success_hit[-1],
-        #       possible_locations_cleaned_up)
         return choice(possible_locations_cleaned_up)
 
     def set_next_hit(self, last_hit: tuple[bool, bool, int]) -> None:
         """
         Sets the next hit based on the result of the last hit.
-
-        :param last_hit: result of the last hit, contains following:
-        (was_hit, was_sunk, hit_warship_size)
-        :type last_hit: tuple[bool, bool, int]
 
         If last_hit wasn't successful it either:\n
         -sets next hit randomly, if there were no successful hits before\n
@@ -287,6 +300,9 @@ class Ai(Player):
 
         If last_hit was successful but didn't sink a warship, it:\n
         -sets next hit based on the last successful hit\n
+
+        :param last_hit: result of the last hit, contains following:
+        :type last_hit: tuple[bool, bool, int]
         """
         was_hit, was_sunk, size = last_hit
         if not was_hit:

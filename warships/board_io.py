@@ -3,14 +3,14 @@ from warship import Warship
 
 def print_labels_horizontal_io(size: int) -> str:
     """
-    Returns horizontal board's labels in the form of
+    Returns horizontal labels in the form of
     A B C D ..., depending on its size
 
     :param size: board's size
     :type size: int
     """
     labels_horizontal = [chr(num+65) for num in range(0, size)]
-    labels_horizontal_as_str = "  "
+    labels_horizontal_as_str = "   "
     for letter in labels_horizontal:
         labels_horizontal_as_str += f"{letter:^3}"
     return labels_horizontal_as_str
@@ -40,7 +40,7 @@ def print_board_io(size: int, locations_warships: list[tuple[int, int]],
     board_str = print_labels_horizontal_io(size)
     board_str += "\n"
     for index in range(size):
-        board_str += f"{index} "
+        board_str += f"{index:<2} "
         for index_inner in range(size):
             if (index_inner, index) not in locations_warships:
                 if (index_inner, index) not in locations_hit:

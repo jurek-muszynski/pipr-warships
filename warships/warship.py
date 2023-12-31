@@ -18,8 +18,8 @@ class Warship():
 
     def __init__(self, blocks: list[tuple[int, int]]) -> None:
         """
-        Creates an instance of the warship class.
-        Raises ValueError if passed blocks are invalid.
+        Creates an instance of the warship class.\n
+        Raises ValueError if passed blocks are invalid.\n
 
         :param blocks: blocks of coordinates, that a warships is made of
         :type blocks: list[tuple[int, int]]

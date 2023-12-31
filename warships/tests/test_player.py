@@ -1,5 +1,7 @@
 from player import Player, Ai
+from player import InvalidHitInputError
 from board import Board
+from board import CoordinatesOutOfRangeError
 import pytest
 
 
@@ -19,6 +21,20 @@ def test_player_hit_std():
     board = Board(2, 2)
     player = Player(board)
     assert player.hit("A0") == (0, 0)
+
+
+def test_player_hit_invalid_input():
+    board = Board(2, 2)
+    player = Player(board)
+    with pytest.raises(InvalidHitInputError):
+        board.hit(player.hit("AA"))
+
+
+def test_player_hit_coordinates_out_of_bounds():
+    board = Board(2, 2)
+    player = Player(board)
+    with pytest.raises(CoordinatesOutOfRangeError):
+        board.hit(player.hit("A2"))
 
 
 def test_format_locations_std():

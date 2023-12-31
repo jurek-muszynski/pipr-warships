@@ -1,21 +1,42 @@
 from board import Board, CoordinatesOutOfRangeError
-from player import Player, Ai
+from player import Player, Ai, InvalidHitInputError
 from time import sleep
 from consts import MAX_NUM_OF_WARSHIPS
 from system import clear
 
 
 class GameEnded(Exception):
+    """
+    GameEnded Exception.\n
+    Raised if a player has sunk all
+    of the oponent's warships
+    """
     pass
 
 
 class Game():
     """
+    Game class. Contains attributes:
 
+    :param board_size: board's size
+    :type board_size: int
+
+    :param player: a player, the user plays as
+    :type player: Player
+
+    :param ai: a player, the user plays against
+    :type ai: Ai
     """
 
     def __init__(self, board_size: int) -> None:
-        self.__board_size = board_size
+        """
+        Creates an instance of the Game class.\n
+        Randomly draws locations for the ai's warships
+
+        :param board_size: board's size
+        :type board_size: int
+        """
+        self.__board_size = int(board_size)
         self.__player = Player(
             Board(self.__board_size, self.__board_size
                   if self.__board_size < MAX_NUM_OF_WARSHIPS
@@ -27,6 +48,12 @@ class Game():
         self.__ai.board.draw_locations()
 
     def players_turn(self):
+        """
+        Lets the player choose locations for next hits.\n
+        Raises CoordinatesOutOfRangeError if choosen coordinates
+        are out of the board's bounds\n
+        Raises InvalidHitInputError if entered hit is invalids
+        """
         print("\nYOUR TURN")
         sleep(1)
         print(self.__ai.board.warships_str())
@@ -40,8 +67,8 @@ class Game():
                 break
             except CoordinatesOutOfRangeError as e:
                 print(str(e))
-            except Exception:
-                print("Invalid input")
+            except InvalidHitInputError as e:
+                print(str(e))
         sleep(1)
         self.result_player()
 

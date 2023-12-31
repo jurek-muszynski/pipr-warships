@@ -6,7 +6,7 @@ from consts import MAX_NUM_OF_WARSHIPS
 
 class InvalidWarshipCountError(Exception):
     """
-    InvalidWarshipCountError Exception.
+    InvalidWarshipCountError Exception.\n
     Raised when that many warships cannot be placed on the board
 
     :param value: passed value
@@ -20,7 +20,7 @@ class InvalidWarshipCountError(Exception):
 
 class InvalidWarshipError(Exception):
     """
-    InvalidWarshipError Exception.
+    InvalidWarshipError Exception.\n
     Raised when a warship cannot be placed on the board
 
     :param warship: invalid warship
@@ -34,7 +34,7 @@ class InvalidWarshipError(Exception):
 
 class CoordinatesOutOfRangeError(Exception):
     """
-   CoordinatesOutOfRangeError Exception.
+   CoordinatesOutOfRangeError Exception.\n
    Raised when passed coordinates aren't within the board
 
    :param coordinates: invalid coordinates
@@ -65,10 +65,10 @@ class Board():
 
     def __init__(self, size: int, num_warships: int) -> None:
         """
-        Creates an instance of the board class.
-        Raises ValueError if size is less/equal 0.
-        Raises ValueError if number of warships is less/equal 0.
-        Raises InvalidWarshipCountError if number of warships greater than size.
+        Creates an instance of the board class.\n
+        Raises ValueError if size is less/equal 0.\n
+        Raises ValueError if number of warships is less/equal 0.\n
+        Raises InvalidWarshipCountError if number of warships greater than size.\n
         Initially 'warships' and 'hit' lists are empty
 
         :param size: board's size
@@ -120,8 +120,8 @@ class Board():
 
     def evaluate_warship(self, warship_to_add: Warship) -> None:
         """
-        Checks if a warship can be added to the board.
-        Raises InvalidWarshipError if warship.size > size
+        Checks if a warship can be added to the board.\n
+        Raises InvalidWarshipError if warship.size > size\n
         Raises InvalidWarshipError if any of its blocks' coordinates
         are out of board's range
 
@@ -248,11 +248,13 @@ class Board():
 
     def hit(self, coordinates: tuple[int, int]) -> tuple[bool, bool, int]:
         """
-        Hits specified coordinates.
+        Hits specified coordinates.\n
         Prints appropriate message depending on the
-        result of that shot
+        result of that shot\n
         Returns a tuple of 3 values describing the shot's result
-        (was_hit, was_sunk, hit_warship_size)
+        (was_hit, was_sunk, hit_warship_size)\n
+        Raises CoordinatesOutOfRangeError if passed coordinates
+        out of the board's bounds
 
         :param coordinates: coordinates of a cell on the board
         :type coordinates: tuple[int, int]
@@ -270,15 +272,16 @@ class Board():
 
     def warships_str(self) -> str:
         """
-        Returns a string representation of all warships and
-        the number of their type's occurances on the board
+        Returns a string representation of all warships with
+        their respective types and the number of those specific
+        warships left on the board
         e.g. 1 mast warship: x1
         """
         return print_warships_io(self.__warships)
 
     def print_board(self, show_warships: bool = False) -> str:
         """
-        Prints the board in the console window.
+        Prints the board in the console window.\n
         If show_warships param is set to True, then it
         prints the locations of warships, otherwise
         they remain hidden

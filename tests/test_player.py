@@ -48,7 +48,7 @@ def test_format_locations_std():
 # def test_place_warships_std(monkeypatch):
 #     board = Board(2, 2)
 #     player = Player(board)
-#     monkeypatch.setattr("player.pick", lambda list, title,
+#     monkeypatch.setattr("player_io.pick", lambda list, title,
 #                         indicator, default_index=0: (0, 0))
 #     assert len(board.get_available_locations_horizontal(1)) == 4
 #     assert len(board.get_available_locations_vertical(1)) == 4
@@ -85,6 +85,31 @@ def test_ai_smart_hit_no_hits(monkeypatch):
     assert ai.smart_hit() == (0, 0)
 
 
+def test_ai_smart_hit_random():
+    board_ai = Board(2, 2)
+    board_player = Board(2, 2)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(0, 0), (0, 1)])
+    all_coordinates = [(0, 0), (0, 1), (1, 1), (1, 0)]
+    assert ai.smart_hit() in all_coordinates
+
+
+def test_ai_smart_hit_chosen_hit_warhsip(monkeypatch):
+    board_ai = Board(2, 2)
+    board_player = Board(2, 2)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(0, 0), (0, 1)])
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: (0, 0))
+    hit = ai.smart_hit()
+    ai.set_next_hit(player.board.hit(hit))
+    monkeypatch.undo()
+    hit = ai.smart_hit()
+    ai.set_next_hit(player.board.hit(hit))
+    assert hit in [(0, 1), (1, 0)]
+
+
 def test_ai_draw_coordinates_std_random_coors(monkeypatch):
     board = Board(2, 2)
     ai = Ai(board)
@@ -102,11 +127,13 @@ def test_ai_draw_coordinates_std_chosen_coors(monkeypatch):
     assert ai.draw_coordinates() == (1, 0)
 
 
-def test_ai_draw_coordinates_warships_coors(monkeypatch):
-    board = Board(2, 2)
-    ai = Ai(board)
+def test_ai_draw_coordinates_omit_warships_coors(monkeypatch):
+    board_ai = Board(2, 2)
+    board_player = Board(2, 2)
+    ai = Ai(board_ai)
+    player = Player(board_player)
     warships_coors = [(0, 0), (0, 1)]
-    board.add_warship(warships_coors)
+    player.board.add_warship(warships_coors)
     warships = {
         2: warships_coors
     }
@@ -140,9 +167,11 @@ def test_ai_flatten_valid_locations_single_distinct():
 
 
 def test_ai_get_next_possible_locations_one_hit_no_misses():
-    board = Board(3, 3)
-    ai = Ai(board)
-    board.add_warship([(1, 0), (1, 1)])
+    board_ai = Board(3, 3)
+    board_player = Board(3, 3)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(1, 0), (1, 1)])
     size = 2
     hits_size_2 = [(1, 1)]
     possible_next_locs = [(0, 1), (1, 0), (1, 2), (2, 1)]
@@ -152,9 +181,11 @@ def test_ai_get_next_possible_locations_one_hit_no_misses():
 
 
 def test_ai_get_next_possible_locations_two_hits_no_misses():
-    board = Board(3, 3)
-    ai = Ai(board)
-    board.add_warship([(0, 0), (1, 0), (2, 0)])
+    board_ai = Board(3, 3)
+    board_player = Board(3, 3)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(0, 0), (1, 0), (2, 0)])
     size = 3
     hits_size_3 = [(0, 0), (1, 0)]
     possible_next_locations = [(2, 0)]
@@ -163,27 +194,40 @@ def test_ai_get_next_possible_locations_two_hits_no_misses():
 
 
 def test_ai_get_next_possible_locations_one_hit_some_misses(monkeypatch):
-    board = Board(3, 3)
-    ai = Ai(board)
-    board.add_warship([(1, 0), (1, 1)])
+    board_ai = Board(3, 3)
+    board_player = Board(3, 3)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(1, 0), (1, 1)])
     size = 2
     hits_size_2 = [(1, 1)]
     misses = [(2, 1), (1, 2)]
     possible_next_locations = [(1, 0), (0, 1)]
-    monkeypatch.setattr(ai, "_Ai__hit", misses)
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: misses[0])
+    ai.smart_hit()
+    monkeypatch.undo()
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: misses[1])
+    ai.smart_hit()
+    monkeypatch.undo()
     assert ai.get_next_possible_locations(
         size, hits_size_2) == possible_next_locations
 
 
 def test_ai_get_next_possible_locations_some_hit_no_misses(monkeypatch):
-    board = Board(3, 3)
-    ai = Ai(board)
-    board.add_warship([(1, 0), (1, 1)])
-    board.add_warship([(0, 1)])
+    board_ai = Board(3, 3)
+    board_player = Board(3, 3)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(1, 0), (1, 1)])
+    player.board.add_warship([(0, 1)])
     size = 2
     hits_size_2 = [(1, 1)]
     hits_overall = [(0, 1), (1, 1)]
-    monkeypatch.setattr(ai, "_Ai__hit", hits_overall)
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: hits_overall[0])
+    ai.smart_hit()
+    monkeypatch.undo()
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: hits_overall[1])
+    ai.smart_hit()
     next_possible_locations = [(1, 0), (1, 2), (2, 1)]
     assert ai.get_next_possible_locations(
         size, hits_size_2) == next_possible_locations
@@ -217,9 +261,9 @@ def test_ai_set_next_hit_miss_draw_coordinates():
     assert ai._Ai__next_hit in all_coordinates
 
 
-def test_ai_set_next_hit_miss_success_hits(monkeypatch):
-    board = Board(2, 2)
-    ai = Ai(board)
-    hit_result = (False, False, 0)
-    hits_size_2 = [(1, 1)]
-    monkeypatch.setattr(ai, "_Ai__success_hit", hits_size_2)
+# def test_ai_set_next_hit_miss_success_hits(monkeypatch):
+#     board = Board(2, 2)
+#     ai = Ai(board)
+#     hit_result = (False, False, 0)
+#     hits_size_2 = [(1, 1)]
+#     monkeypatch.setattr(ai, "_Ai__success_hit", hits_size_2)

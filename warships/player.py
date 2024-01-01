@@ -302,7 +302,7 @@ class Ai(Player):
         If last_hit was successful but didn't sink a warship, it:\n
         -sets next hit based on the last successful hit\n
 
-        :param last_hit: result of the last hit, contains following:
+        :param last_hit: result of the last hit
         :type last_hit: tuple[bool, bool, int]
         """
         was_hit, was_sunk, size = last_hit

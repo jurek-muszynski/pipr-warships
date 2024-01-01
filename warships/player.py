@@ -1,9 +1,9 @@
-from random import choice
-from pick import pick
 from board import Board
-from time import sleep
+from player_io import pick_location
 from consts import MAX_NUM_OF_WARSHIPS
+from random import choice
 from system import clear
+from time import sleep
 
 
 class InvalidHitInputError(Exception):
@@ -99,7 +99,7 @@ class Player():
             to_add = self.__warship_types.get(size)
             added = 0
             while added < to_add:
-                title = f"Place your {size} mast warship"
+                # title = f"Place your {size} mast warship"
                 available_locations = (self.board.get_available_locations_horizontal(
                     size)) + (self.board.get_available_locations_vertical(size))
                 unique_available_locations = []
@@ -107,8 +107,9 @@ class Player():
                     location) for location in available_locations if
                     location not in unique_available_locations]
                 options = self._format_locations(unique_available_locations)
-                option, index = pick(
-                    options, title, indicator="->", default_index=0)
+                # option, index = pick(
+                #     options, title, indicator="->", default_index=0)
+                index = pick_location(options, to_add)
                 self.board.add_warship(
                     unique_available_locations[index]
                 )

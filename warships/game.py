@@ -140,6 +140,7 @@ class Game():
             try:
                 self.players_turn()
                 self.ai_turn()
+                # clear()
             except GameEnded:
                 sleep(1)
                 clear()

@@ -15,6 +15,8 @@ def test_create_board_invalid():
     with pytest.raises(ValueError):
         Board(0, 1)
     with pytest.raises(ValueError):
+        Board(27, 1)
+    with pytest.raises(ValueError):
         Board(1, 0)
     with pytest.raises(ValueError):
         Board(-10, 5)
@@ -186,7 +188,7 @@ def test_warships_str_std():
 def test_print_board_std():
     board = Board(2, 2)
     board_str = board.print_board().split("\n")
-    assert board_str[0] == "   A  B "
+    assert board_str[0] == "    A  B "
     assert board.print_board() == board.print_board(True)
     board.add_warship([(0, 0)])
     assert "x" not in board.print_board()

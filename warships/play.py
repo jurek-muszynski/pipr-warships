@@ -3,7 +3,14 @@ from time import sleep
 from system import clear
 
 
-def menu():
+def menu() -> None:
+    """
+    Prints out the main menu of the game, a user
+    can choose to either:\n
+    1 - Start the game\n
+    2 - See the instructions\n
+    3 - Exit the game
+    """
     title = "Welcome to Warships with AI"
     print(":" * 29)
     print(f"{title:^29}")
@@ -13,7 +20,13 @@ def menu():
     print("3. Exit")
 
 
-def start():
+def start() -> None:
+    """
+    Initializes the Game object & enters the
+    game's main loop
+
+    Raises ValueError if passed board size is invalid
+    """
     print("\nLet the game begin!")
     sleep(1)
     clear()
@@ -27,7 +40,10 @@ def start():
     game.play()
 
 
-def instructions():
+def instructions() -> None:
+    """
+    Prints out the game's instructions
+    """
     clear()
     print("Instructions: ")
     sleep(1)
@@ -49,7 +65,7 @@ def instructions():
     clear()
 
 
-def main():
+def main() -> None:
     while True:
         menu()
         choice = input("\nEnter your choice (1-3): ")

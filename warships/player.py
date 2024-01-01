@@ -23,14 +23,14 @@ class Player():
     :param board: a board with player's warships
     :type board: Board
 
-    :param warship_types: types of warships with their count on the board
+    :param warship_types: dictionary of types of warships and their amount
     :type warship_types: dict[int, int]
     """
 
     def __init__(self, board: Board) -> None:
         """
-        Creates an instance of the Player class
-        When initialized, board is empty
+        Creates an instance of the Player class.\n
+        When initialized, the board is empty.
 
         :param board: player's board
         :type board: Board
@@ -51,8 +51,8 @@ class Player():
 
     def hit(self, hit_input: str) -> tuple[int, int]:
         """
-        Parses a hit entered by the user to a tuple of integers\n
-        Raises InvalidHitInputError if entered hit is invalid
+        Parses a hit entered by the user to a tuple of integers.\n
+        Raises InvalidHitInputError if entered hit is invalid.
 
         :param hit_input: hit entered by the user e.g. A0 -> (0,0)
         :type hit: str
@@ -72,10 +72,10 @@ class Player():
                           locations: list[list[tuple[int, int]]]) -> list[list[str]]:
         """
         Parses a list of locations so that they could be presented
-        in the same format as the user gets to enter them, e.g (0,0) -> A0
+        in the same format as the user enterd them, e.g [(0,0)] -> ["A0"].
 
         :param locations: a list of locations
-        :type loations: list[list[tuple[int]]]
+        :type locations: list[list[tuple[int, int]]]
         """
         formatted = []
         for location in locations:
@@ -90,8 +90,8 @@ class Player():
     def place_warships(self) -> None:
         """
         Allows the user to choose their wanted locations for
-        all assigned warships,
-        The order is descending, biggest ships are to be chosen first
+        all assigned warships.\n
+        The order is descending, biggest ships are to be chosen first.
         """
         sleep(1)
         for size in self.__warship_types:
@@ -131,7 +131,7 @@ class Ai(Player):
     :param success_hit: all successful hits made by the ai
     :type success_hit: list[tuple[int, int]]
 
-    :param warships_hit: successful hit locations assigned to the sizes of those hit warships
+    :param warships_hit: successfully hit locations assigned to the sizes of hit warships
     :type warships_hit: dict[int, list[tuple[int,int]]]
 
     :param next_hit: hit to be made next by the ai
@@ -140,9 +140,9 @@ class Ai(Player):
 
     def __init__(self, board: Board) -> None:
         """
-        Creates an instance of the Ai class.
+        Creates an instance of the Ai class.\n
         When initialized, hit, success_hit, warships_hit.values() are empty &
-        next_hit is set to 0
+        next_hit is set to 0.
 
         :param board: a board with ai's warships
         :type board: Board
@@ -156,7 +156,7 @@ class Ai(Player):
     def remove_hit_before(self,
                           locations: list[tuple[int, int]]) -> list[tuple[int, int]]:
         """
-        Returns a list of locations without those already hit at before
+        Returns a list of locations without those already hit at before.
 
         :param locations: list of locations(coordinates)
         :type locations: list[tuple[int,int]]
@@ -166,7 +166,7 @@ class Ai(Player):
 
     def draw_coordinates(self) -> tuple[int, int]:
         """
-        Returns a randomly chosen pair of available coordinates on the board
+        Returns a randomly chosen pair of available coordinates on the board.
         """
         all_locations = []
         warships_coordinates = sum(self.__warships_hit.values(), [])
@@ -180,7 +180,7 @@ class Ai(Player):
                                           warship_size: int) -> list[tuple[int, int]]:
         """
         Returns a list of all possible horizontal locations for warships
-        of a specified size
+        of a specified size.
 
         :param warship_size: size of a warship
         :type warship_size: int
@@ -199,7 +199,7 @@ class Ai(Player):
                                         warship_size: int) -> list[tuple[int, int]]:
         """
         Returns a list of all possible vertical locations for warships
-        of a specified size
+        of a specified size.
 
         :param warship_size: size of a warship
         :type warship_size: int
@@ -215,10 +215,10 @@ class Ai(Player):
         return locations
 
     def flatten_valid_locations(self, locations: list[list[tuple[int, int]]],
-                                hits: list[tuple[int, int]]):
+                                hits: list[tuple[int, int]]) -> list[tuple[int, int]]:
         """
         Returns a flattened list of all locations, without
-        those already hit, so that there is no nesting inside
+        those already hit, so that there is no nesting inside.
 
         :param locations: nested list of locations
         :type locations: list[list[tuple[int,int]]]
@@ -237,7 +237,7 @@ class Ai(Player):
                                     hits: list[tuple[int, int]]) -> list[tuple[int, int]]:
         """
         Returns a list of next possible locations based on
-        what hits were made by the ai before
+        what hits were made before.
 
         :param size: hit warship's size
         :type size: int
@@ -262,8 +262,8 @@ class Ai(Player):
 
     def get_warship_key(self, location: tuple[int, int]) -> int:
         """
-        Returns the size of a warship, which specified
-        location has been hit
+        Returns the size of a warship, of which
+        one of the locations were hit.
 
         :param location: hit coordinates of a warship
         :type location: tuple[int,int]
@@ -275,7 +275,7 @@ class Ai(Player):
     def set_next_hit_with_key(self, key: int) -> tuple[int, int]:
         """
         Returns a chosen next possible location
-        of a warship, which was hit
+        of a hit warship.
 
         :param key: size of a warship, hit before
         :type key: int

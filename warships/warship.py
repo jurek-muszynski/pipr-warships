@@ -49,7 +49,7 @@ class Warship():
     def evaluate_blocks(self, blocks: list[tuple[int, int]]) -> bool:
         """
         Checks if passed blocks are correctly alligned
-        (distance between two consecutive blocks is 1)
+        (distance between two consecutive blocks is 1).
 
         :param blocks: blocks of coordinates
         :type blocks: list[tuple[int, int]]
@@ -67,15 +67,15 @@ class Warship():
     def __str__(self) -> str:
         """
         Returns a simple description of a warship:
-        {1-5} mast warship
+        {1-5} mast warship.
         """
         return f"{len(self.__blocks)} mast warship"
 
     def was_hit(self, location: tuple[int, int]) -> bool:
         """
-        Hits the warship at the following coordinates\n
-        Returns True if the hit was successful\n
-        Returns False if the hit was a miss
+        Hits the warship at the following coordinates.\n
+        Returns True if the hit was successful.\n
+        Returns False if the hit was a miss.
 
         :param location: coordinates e.g. (1,1)
         :type location: tuple[int]
@@ -88,6 +88,6 @@ class Warship():
 
     def was_sunk(self) -> bool:
         """
-        Checks if a warship has been sunk
+        Checks if a warship has been sunk.
         """
         return self.__hits == self.__size

@@ -1,7 +1,7 @@
 from warship import Warship
 from board_io import print_board_io, print_warships_io, print_hit_warships_io
 from random import choice
-from consts import MAX_NUM_OF_WARSHIPS
+from consts import MAX_NUM_OF_WARSHIPS, MAX_BOARD_SIZE
 
 
 class InvalidWarshipCountError(Exception):
@@ -67,9 +67,11 @@ class Board():
         """
         Creates an instance of the board class.\n
         Raises ValueError if size is less/equal 0.\n
+        Raises ValueError if size is greater than MAX_BOARD_SIZE.\n
         Raises ValueError if number of warships is less/equal 0.\n
-        Raises InvalidWarshipCountError if number of warships greater than size.\n
-        Initially 'warships' and 'hit' lists are empty
+        Raises InvalidWarshipCountError if number of warships is greater
+        than size.\n
+        Initially 'warships' and 'hit' lists are empty.
 
         :param size: board's size
         :type size: int
@@ -77,7 +79,7 @@ class Board():
         :param num_warships: number of warships on the board
         :type num_warships: int
         """
-        if (size <= 0):
+        if size <= 0 or size > MAX_BOARD_SIZE:
             raise ValueError(size)
         else:
             self.__size = size
@@ -111,7 +113,7 @@ class Board():
     def warships(self) -> str:
         """
         Returns a string representation of all warships
-        e.g. 1 mast warship 2 mast warship
+        e.g. 1 mast warship 2 mast warship.
         """
         warships_str = ""
         for warship in self.__warships:
@@ -123,7 +125,7 @@ class Board():
         Checks if a warship can be added to the board.\n
         Raises InvalidWarshipError if warship.size > size\n
         Raises InvalidWarshipError if any of its blocks' coordinates
-        are out of board's range
+        are out of board's range.
 
         :param warship_to_add: warship to be added to the board
         :type warship_to_add: Warship

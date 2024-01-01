@@ -4,7 +4,7 @@ from warship import Warship
 def print_labels_horizontal_io(size: int) -> str:
     """
     Returns horizontal labels in the form of
-    A B C D ..., depending on its size
+    A B C D ..., depending on its size.
 
     :param size: board's size
     :type size: int

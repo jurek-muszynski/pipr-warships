@@ -24,15 +24,15 @@ Projekt został wykonany w języku Python a rozgrywka odbywa się poprzez okno k
 Program należy uruchomić w środowisku wirtualnym, którego konfiguracja znajduje się w pliku requirements.txt
 
 Na systemie **Linux** należy:
-1. Zainstalować moduł virtualenv pip install virtualenv,
-2. Utworzyć środowisko wirtualne python3 -m venv .venv
-3. Uruchomić środowisko wirtualne source .venv/bin/activate
-4. Zainstalować wymagane biblioteki pip install -r requirements.txt
-5. Uruchomić plik z główną pętlą gry python3 warships/play.py
+1. Zainstalować moduł virtualenv _pip install virtualenv_,
+2. Utworzyć środowisko wirtualne _python3 -m venv .venv_
+3. Uruchomić środowisko wirtualne _source .venv/bin/activate_
+4. Zainstalować wymagane biblioteki _pip install -r requirements.txt_
+5. Uruchomić plik z główną pętlą gry _python3 warships/play.py_
 
 Na systemie **Windows** należy:
-1. Zainstalować moduł virtualenv pip install virtualenv,
-2. Utworzyć środowisko wirtualne virtualenv venv
-3. Uruchomić środowisko wirtualne .\venv\Scripts\activate.bat
-4. Zainstalować wymagane biblioteki pip install -r requirements.txt
-5. Uruchomić plik z główną pętlą gry python warships/play.py
+1. Zainstalować moduł virtualenv _pip install virtualenv_,
+2. Utworzyć środowisko wirtualne _virtualenv venv_
+3. Uruchomić środowisko wirtualne _.\venv\Scripts\activate.bat_
+4. Zainstalować wymagane biblioteki _pip install -r requirements.txt_
+5. Uruchomić plik z główną pętlą gry _python warships/play.py_

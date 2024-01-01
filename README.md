@@ -23,7 +23,7 @@ Obecnie program należy w środowisku wirtualnym, którego konfiguracja znajduje
 
 Należy zatem:
 1. Utworzyć środowisko wirtualne python3 -m venv .venv
-2. Uruchomić środowisko wirtualne source .venv/bin.activate
+2. Uruchomić środowisko wirtualne source .venv/bin/activate
 3. Zainstalować wymagane biblioteki pip install -r requirements.txt
 4. Uruchomić plik z główną pętlą gry python3 warships/play.py
 

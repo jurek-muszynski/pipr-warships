@@ -19,11 +19,20 @@ Projekt został wykonany w języku Python a rozgrywka odbywa się poprzez okno k
 ***Game*** – klasa opisująca główną logikę rozgrywki. Zarządza kolejnością ruchów, pilnuje stanu gry i ustala rezultat na podstawie przebiegu gry.
 
 ## Instrukcja Obsługi:
-Obecnie program należy w środowisku wirtualnym, którego konfiguracja znajduje się w pliku requirements.txt
 
-Należy zatem:
-1. Utworzyć środowisko wirtualne python3 -m venv .venv
-2. Uruchomić środowisko wirtualne source .venv/bin/activate
-3. Zainstalować wymagane biblioteki pip install -r requirements.txt
-4. Uruchomić plik z główną pętlą gry python3 warships/play.py
+### Przygotowanie Środowiska
+Program należy uruchomić w środowisku wirtualnym, którego konfiguracja znajduje się w pliku requirements.txt
 
+Na systemie **Linux** należy:
+1. Zainstalować moduł virtualenv pip install virtualenv,
+2. Utworzyć środowisko wirtualne python3 -m venv .venv
+3. Uruchomić środowisko wirtualne source .venv/bin/activate
+4. Zainstalować wymagane biblioteki pip install -r requirements.txt
+5. Uruchomić plik z główną pętlą gry python3 warships/play.py
+
+Na systemie **Windows** należy:
+1. Zainstalować moduł virtualenv pip install virtualenv,
+2. Utworzyć środowisko wirtualne virtualenv venv
+3. Uruchomić środowisko wirtualne .\venv\Scripts\activate.bat
+4. Zainstalować wymagane biblioteki pip install -r requirements.txt
+5. Uruchomić plik z główną pętlą gry python warships/play.py

@@ -1,6 +1,7 @@
 from game import Game
 from time import sleep
 from system import clear
+from os import name
 
 
 def menu() -> None:
@@ -49,8 +50,11 @@ def instructions() -> None:
     sleep(1)
     print("\nBOARD PREP\n")
     print("1 > Choose the size of your board e.g. (2)")
-    print(
-        "2 > Use the arrow keys to place your warships according to your liking")
+    if name == "nt":
+        print("2 > Chose where to place your warships")
+    else:
+        print(
+            "2 > Use the arrow keys to place your warships according to your liking")
     sleep(1)
     print("\nGAME ON\n")
     print("1 > Take turns with the AI on hitting the opponent's ships")

@@ -1,7 +1,7 @@
-from player import Player, Ai
-from player import InvalidHitInputError
 from board import Board
 from board import CoordinatesOutOfRangeError
+from player import Player, Ai
+from player import InvalidHitInputError
 import pytest
 
 

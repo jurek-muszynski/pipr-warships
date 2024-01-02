@@ -3,6 +3,10 @@ import pytest
 
 
 def test_create_warship_standard():
+    """
+    Test warships's constructor method\n
+    This test targets the standard use case
+    """
     blocks = [
         (0, 0), (0, 1), (0, 2)
     ]
@@ -14,6 +18,10 @@ def test_create_warship_standard():
 
 
 def test_create_warship_invalid():
+    """
+    Test warships's constructor method\n
+    This test targets incorrect use cases
+    """
     blocks = []
     with pytest.raises(ValueError):
         Warship(blocks)
@@ -26,6 +34,10 @@ def test_create_warship_invalid():
 
 
 def test_warship_str_std():
+    """
+    Test warships's __str__() method\n
+    This test targets the standard use case
+    """
     blocks = [
         (0, 0), (0, 1), (0, 2)
     ]
@@ -34,6 +46,10 @@ def test_warship_str_std():
 
 
 def test_warship_hit_std():
+    """
+    Test warships's hit() method\n
+    This test targets the standard use case
+    """
     blocks = [
         (0, 0), (0, 1), (0, 2)
     ]
@@ -46,6 +62,11 @@ def test_warship_hit_std():
 
 
 def test_warship_hit_same_block():
+    """
+    Test warships's hit() method\n
+    This test targets the case, when a hit
+    was repeated
+    """
     blocks = [
         (0, 0), (0, 1), (0, 2)
     ]
@@ -58,6 +79,11 @@ def test_warship_hit_same_block():
 
 
 def test_warship_hit_sink():
+    """
+    Test warships's hit() method\n
+    This test targets the case when
+    a warship was sunk
+    """
     blocks = [
         (0, 0), (0, 1), (0, 2)
     ]

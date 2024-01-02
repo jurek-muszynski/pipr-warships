@@ -43,10 +43,10 @@ Po prawidłowej konfiguracji środowiska wirtualnego użytkownik powinien zobacz
 ### Rozgrywka
 Aby rozpocząć rozgrywkę, użytkownik powinien wybrać opcje 2. Start Game z głównego menu gry. Na początku zostanie poproszony o wybranie rozmiaru planszy na której będzie chciał grać (UWAGA: wprowadza się tylko jedną liczbę, jako że plansze są zawsze kwadratowe, która musi być z zakresu <1,26>). Następnie użytkownik otrzyma możliwość ulokowania swoich statków na wcześniej wybranej planszy. W zależności od systemu operacyjnego na którym będzie uruchomiony program, użytkownik będzie mógł wybrać pozycje swoich statków za pomocą klawiszy UP/DOWN lub wprowadzając odpowiednią liczbę przy której wyświetli się wybrana pozycja statków, dokonany wybór należy potwierdzić przyciskiem ENTER. Po ułożeniu swoich statków rozpocznie się „właściwa” gra w statki, polegająca na wymianie strzałów między komputerem a użytkownikiem. Podczas swojej tury użytkownik musi wprowadzić współrzędne w które będzie chciał oddać swój strzał. Współrzędne muszą być w formacie „A0”, gdzie A jest indeksem pierwszej kolumny, a 0 indeksem pierwszego wiersza, w przeciwnym wypadku użytkownik otrzyma informacje o nieprawidłowym wczytaniu współrzędnych i będzie musiał je wprowadzić jeszcze raz (wprowadzone współrzędne należy naturalnie potwierdzić przyciskiem ENTER). Gra toczy się do momentu zatopienia wszystkich statków przeciwnika, a informację o stanie gry użytkownik otrzymuje po każdym strzale w postaci wyświetlonej planszy
 
- - [#] oznacza że w strzał w dane współrzędne był chybiony,
- - [x] oznacza że strzał w dane współrzędne trafił w jakiś statek,
- - [o] oznacza że w danych współrzędnych znajduje się jakiś nieukryty statek,
- - [ ] oznacza że w danych współrzędnych nie ma statku bądź jest ukryty.
+ - '[#]' oznacza że w strzał w dane współrzędne był chybiony,
+ - '[x]' oznacza że strzał w dane współrzędne trafił w jakiś statek,
+ - '[o]' oznacza że w danych współrzędnych znajduje się jakiś nieukryty statek,
+ - '[ ]' oznacza że w danych współrzędnych nie ma statku bądź jest ukryty.
 
 
 ## Refleksje:

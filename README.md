@@ -1,6 +1,17 @@
 # PROJEKT PIPR – „Statki”
 
-#### AUTOR: Jerzy Muszyński, Informatyka gr 202.
+#### Autor: Jerzy Muszyński, Informatyka gr 202.
+
+## Spis treści
+- [Cel Projektu](#cel-projektu)
+- [Opis Projektu](#opis-projektu)
+- [Użyte klasy](#użyte-klasy)
+- [Instrukcja Obsługi](#instrukcja-obsługi)
+  - [Przygotowanie Środowiska](#przygotowanie-środowiska)
+  - [Przygotowanie rozgrywki](#przygotowanie-rozgrywki)
+  - [Rozgrywka](#rozgrywka)
+- [Refleksje](#refleksje)
+
 ## Cel Projektu:
 Głównym celem projektu było stworzenie interaktywnej aplikacji do gry w statki, pozwalającej na walkę z komputerem. Użytkownik miał zmierzyć się z „wirtualnym” przeciwnikiem, który naśladuje człowieka i jest w stanie wykonywać logiczne ruchy, w celu zatopienia wszystkich statków.
 

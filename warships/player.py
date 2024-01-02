@@ -292,15 +292,15 @@ class Ai(Player):
         Sets the next hit based on the result of the last hit.
 
         If last_hit wasn't successful it either:\n
-        -sets next hit randomly, if there were no successful hits before\n
-        -sets next hit based on the last successful hit\n
+        - sets next hit randomly, if there were no successful hits before\n
+        - sets next hit based on the last successful hit\n
 
         If last_hit was successful and sank a warship, it either:\n
-        -sets next hit randomly, if there were no successful hits before\n
-        -sets next hit based on the last successful hit\n
+        - sets next hit randomly, if there were no successful hits before\n
+        - sets next hit based on the last successful hit\n
 
         If last_hit was successful but didn't sink a warship, it:\n
-        -sets next hit based on the last successful hit\n
+        - sets next hit based on the last successful hit\n
 
         :param last_hit: result of the last hit
         :type last_hit: tuple[bool, bool, int]
@@ -334,7 +334,7 @@ class Ai(Player):
         Returns a hit based on the next_hit parameter's value.
 
         If next_hit is 0 and there weren't any hits before:\n
-        -the hit will by drawn randomly\n
+        - the hit will by drawn randomly\n
 
         Otherwise returns the next_hit parameter's value
         """

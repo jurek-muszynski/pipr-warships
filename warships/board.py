@@ -34,8 +34,8 @@ class InvalidWarshipError(Exception):
 
 class CoordinatesOutOfRangeError(Exception):
     """
-   CoordinatesOutOfRangeError Exception.\n
-   Raised when passed coordinates aren't within the board
+    CoordinatesOutOfRangeError Exception.\n
+    Raised when passed coordinates aren't within the board
 
    :param coordinates: invalid coordinates
    :type coordinates: tuple[int,int]

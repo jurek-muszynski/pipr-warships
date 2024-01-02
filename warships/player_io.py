@@ -2,7 +2,19 @@ from os import name
 from pick import pick
 
 
-def pick_location(options, size):
+def pick_location(options: list[list[tuple[int, int]]], size: int) -> int:
+    """
+    Lets the user choose locations for their assigned warships.\n
+    Depending on the OS the user has to either:\n
+    - enter the index of the chosen placement option manually (Windows)
+    - use their arrow keys to choose the placement option (Linux)
+
+    :param options: possible options for placing warships of a specified size
+    :type options: list[list[tuple[int,int]]]
+
+    :param size: size of a warship that has to be placed
+    :type size: int
+    """
     if name == "nt":
         print(f"Place your {size} mast warship\n")
         for count, locations in enumerate(options):

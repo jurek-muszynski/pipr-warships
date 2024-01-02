@@ -6,6 +6,10 @@ import pytest
 
 
 def test_create_player_std():
+    """
+    Test player's constructor method\n
+    This test targets the standard use case
+    """
     board = Board(2, 2)
     player = Player(board)
     assert player.board == board
@@ -13,17 +17,30 @@ def test_create_player_std():
 
 
 def test_create_player_invalid():
+    """
+    Test player's constructor method\n
+    This test targets the incorrect use case
+    """
     with pytest.raises(ValueError):
         Player(Board(0, 0))
 
 
 def test_player_hit_std():
+    """
+    Test player's hit() method\n
+    This test targets the correct use case
+    """
     board = Board(2, 2)
     player = Player(board)
     assert player.hit("A0") == (0, 0)
 
 
 def test_player_hit_invalid_input():
+    """
+    Test player's hit() method\n
+    This test targets the case when passed input
+    is incorrect
+    """
     board = Board(2, 2)
     player = Player(board)
     with pytest.raises(InvalidHitInputError):
@@ -31,6 +48,11 @@ def test_player_hit_invalid_input():
 
 
 def test_player_hit_coordinates_out_of_bounds():
+    """
+    Test player's hit() method\n
+    This test targets the case when passed coordinates
+    are out of the board's range
+    """
     board = Board(2, 2)
     player = Player(board)
     with pytest.raises(CoordinatesOutOfRangeError):
@@ -38,6 +60,10 @@ def test_player_hit_coordinates_out_of_bounds():
 
 
 def test_format_locations_std():
+    """
+    Test player's _format_locations() method\n
+    This test targets the standard use case
+    """
     board = Board(2, 2)
     player = Player(board)
     locations = [[(0, 0), (1, 0)], [(0, 1)]]
@@ -45,22 +71,11 @@ def test_format_locations_std():
     assert player._format_locations(locations) == formatted_locations
 
 
-# def test_place_warships_std(monkeypatch):
-#     board = Board(2, 2)
-#     player = Player(board)
-#     monkeypatch.setattr("player_io.pick", lambda list, title,
-#                         indicator, default_index=0: (0, 0))
-#     assert len(board.get_available_locations_horizontal(1)) == 4
-#     assert len(board.get_available_locations_vertical(1)) == 4
-#     player.place_warships()
-#     assert len(board.get_available_locations_horizontal(1)) == 1
-#     assert len(board.get_available_locations_vertical(1)) == 1
-#     assert board.get_available_locations_vertical(
-#         1) == board.get_available_locations_horizontal(1)
-#     assert board.get_available_locations_vertical(1) == [[(1, 1)]]
-
-
 def test_create_ai_player_std():
+    """
+    Test ai's constructor method\n
+    This test targets the standard use case
+    """
     board = Board(2, 2)
     ai = Ai(board)
     assert ai.board == board
@@ -68,17 +83,48 @@ def test_create_ai_player_std():
 
 
 def test_create_ai_player_invalid():
+    """
+    Test ai's constructor method\n
+    This test targets the incorrect use case
+    """
     with pytest.raises(ValueError):
         Ai(Board(0, 0))
 
 
-def test_ai_remove_hit_before_no_hits(monkeypatch):
+def test_ai_remove_hit_before_std(monkeypatch):
+    """
+    Test ai's remove_hit_before() method\n
+    This test targets the standard use case
+    """
+    board_ai = Board(2, 2)
+    board_player = Board(2, 2)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: (0, 0))
+    hit = ai.smart_hit()
+    assert hit == (0, 0)
+    player.board.hit(hit)
+    assert ai.remove_hit_before([(0, 0), (0, 1), (1, 0), (1, 1)]) == [
+        (0, 1), (1, 0), (1, 1)]
+
+
+def test_ai_remove_hit_before_no_hits():
+    """
+    Test ai's remove_hit_before() method\n
+    This test targets the case, when there
+    were no hits before
+    """
     board = Board(2, 2)
     ai = Ai(board)
     assert ai.remove_hit_before([(0, 0)]) == [(0, 0)]
 
 
 def test_ai_smart_hit_no_hits(monkeypatch):
+    """
+    Test ai's smart_hit() method\n
+    This test targets the case, when there
+    were no hits before, mocked random drawing
+    """
     board = Board(2, 2)
     ai = Ai(board)
     monkeypatch.setattr(ai, "draw_coordinates", lambda: (0, 0))
@@ -86,6 +132,11 @@ def test_ai_smart_hit_no_hits(monkeypatch):
 
 
 def test_ai_smart_hit_random():
+    """
+    Test ai's smart_hit() method\n
+    This test targets the case, when there
+    were no hits before, random drawing
+    """
     board_ai = Board(2, 2)
     board_player = Board(2, 2)
     ai = Ai(board_ai)
@@ -96,6 +147,12 @@ def test_ai_smart_hit_random():
 
 
 def test_ai_smart_hit_chosen_hit_warhsip(monkeypatch):
+    """
+    Test ai's smart_hit() method\n
+    This test targets the case, when there
+    were no hits before and the randomly
+    drawn hit is successful
+    """
     board_ai = Board(2, 2)
     board_player = Board(2, 2)
     ai = Ai(board_ai)
@@ -110,39 +167,55 @@ def test_ai_smart_hit_chosen_hit_warhsip(monkeypatch):
     assert hit in [(0, 1), (1, 0)]
 
 
-def test_ai_draw_coordinates_std_random_coors(monkeypatch):
+def test_ai_draw_coordinates_random_coors_no_hits_before(monkeypatch):
+    """
+    Test ai's draw_coordinates() method\n
+    This test targets the case, when there
+    no hits before
+    """
     board = Board(2, 2)
     ai = Ai(board)
-    hit_before = [(1, 0), (1, 1)]
-    monkeypatch.setattr(ai, "remove_hit_before", lambda list: hit_before)
-    assert ai.draw_coordinates() in hit_before
+    assert ai.draw_coordinates() in [(0, 0), (0, 1), (1, 0), (1, 1)]
 
 
-def test_ai_draw_coordinates_std_chosen_coors(monkeypatch):
+def test_ai_draw_coordinates_random_coors_some_hits_before(monkeypatch):
+    """
+    Test ai's draw_coordinates() method\n
+    This test targets the case, when there
+    were some hits before
+    """
     board = Board(2, 2)
     ai = Ai(board)
+    all_coordinates = [(0, 0), (0, 1), (1, 0), (1, 1)]
     hit_before = [(1, 0), (1, 1)]
-    monkeypatch.setattr(ai, "remove_hit_before", lambda list: hit_before)
+    available = [hit for hit in all_coordinates if hit not in hit_before]
+    assert available == [(0, 0), (0, 1)]
+    monkeypatch.setattr(ai, "remove_hit_before", lambda list: available)
+    assert ai.draw_coordinates() in available
+
+
+def test_ai_draw_coordinates_chosen_coors(monkeypatch):
+    """
+    Test ai's draw_coordinates() method\n
+    This test targets the case, when there
+    were some hits before and drawing is mocked
+    """
+    board = Board(2, 2)
+    ai = Ai(board)
+    all_coordinates = [(0, 0), (0, 1), (1, 0), (1, 1)]
+    hit_before = [(1, 0), (1, 1)]
+    available = [hit for hit in all_coordinates if hit not in hit_before]
+    monkeypatch.setattr(ai, "remove_hit_before", lambda list: available)
     monkeypatch.setattr("player.choice", lambda list: list[0])
-    assert ai.draw_coordinates() == (1, 0)
-
-
-def test_ai_draw_coordinates_omit_warships_coors(monkeypatch):
-    board_ai = Board(2, 2)
-    board_player = Board(2, 2)
-    ai = Ai(board_ai)
-    player = Player(board_player)
-    warships_coors = [(0, 0), (0, 1)]
-    player.board.add_warship(warships_coors)
-    warships = {
-        2: warships_coors
-    }
-    monkeypatch.setattr(ai, "_Ai__warships_hit", warships)
-    assert ai.draw_coordinates() not in warships_coors
-    assert ai.draw_coordinates() in [(1, 0), (1, 1)]
+    assert ai.draw_coordinates() == (0, 0)
 
 
 def test_ai_draw_coordinates_no_available(monkeypatch):
+    """
+    Test ai's draw_coordinates() method\n
+    This test targets the case, when there
+    are no empty locations left
+    """
     board = Board(2, 2)
     ai = Ai(board)
     monkeypatch.setattr(ai, "remove_hit_before", lambda list: [])
@@ -151,6 +224,24 @@ def test_ai_draw_coordinates_no_available(monkeypatch):
 
 
 def test_ai_flatten_valid_locations_std():
+    """
+    Test ai's flatten_valid_locations() method\n
+    This test targets the standard use case
+    """
+    board = Board(2, 2)
+    ai = Ai(board)
+    hits = []
+    locations = [[(0, 0), (0, 1)], [(0, 0), (1, 0)]]
+    assert ai.flatten_valid_locations(locations, hits) == [
+        (0, 0), (0, 1), (0, 0), (1, 0)]
+
+
+def test_ai_flatten_valid_locations_hit():
+    """
+    Test ai's flatten_valid_locations() method\n
+    This test targets the case, when there was a hit
+    before
+    """
     board = Board(2, 2)
     ai = Ai(board)
     hits = [(0, 0)]
@@ -158,7 +249,12 @@ def test_ai_flatten_valid_locations_std():
     assert ai.flatten_valid_locations(locations, hits) == [(0, 1), (1, 0)]
 
 
-def test_ai_flatten_valid_locations_single_distinct():
+def test_ai_flatten_valid_locations_one_distinct():
+    """
+    Test ai's flatten_valid_locations() method\n
+    This test targets the case, when there would be
+    only one distict location left
+    """
     board = Board(2, 2)
     ai = Ai(board)
     hits = [(0, 0), (0, 1)]
@@ -167,6 +263,11 @@ def test_ai_flatten_valid_locations_single_distinct():
 
 
 def test_ai_get_next_possible_locations_one_hit_no_misses():
+    """
+    Test ai's get_next_possible_locations() method\n
+    This test targets the case, when there was a single
+    hit before without any misses
+    """
     board_ai = Board(3, 3)
     board_player = Board(3, 3)
     ai = Ai(board_ai)
@@ -181,6 +282,11 @@ def test_ai_get_next_possible_locations_one_hit_no_misses():
 
 
 def test_ai_get_next_possible_locations_two_hits_no_misses():
+    """
+    Test ai's get_next_possible_locations() method\n
+    This test targets the case, when there were two
+    hits before without any misses
+    """
     board_ai = Board(3, 3)
     board_player = Board(3, 3)
     ai = Ai(board_ai)
@@ -194,6 +300,11 @@ def test_ai_get_next_possible_locations_two_hits_no_misses():
 
 
 def test_ai_get_next_possible_locations_one_hit_some_misses(monkeypatch):
+    """
+    Test ai's get_next_possible_locations() method\n
+    This test targets the case, when there was a single
+    hit with some misses
+    """
     board_ai = Board(3, 3)
     board_player = Board(3, 3)
     ai = Ai(board_ai)
@@ -214,6 +325,11 @@ def test_ai_get_next_possible_locations_one_hit_some_misses(monkeypatch):
 
 
 def test_ai_get_next_possible_locations_some_hit_no_misses(monkeypatch):
+    """
+    Test ai's get_next_possible_locations() method\n
+    This test targets the case, when there were some
+    hits before without any misses
+    """
     board_ai = Board(3, 3)
     board_player = Board(3, 3)
     ai = Ai(board_ai)
@@ -233,7 +349,12 @@ def test_ai_get_next_possible_locations_some_hit_no_misses(monkeypatch):
         size, hits_size_2) == next_possible_locations
 
 
-def test_ai_get_next_hit_with_key_std(monkeypatch):
+def test_ai_set_next_hit_with_key_chosen(monkeypatch):
+    """
+    Test ai's set_next_hit_with_key() method\n
+    This test targets the standard use case,
+    mocked random drawing
+    """
     board = Board(3, 3)
     ai = Ai(board)
     hit_size = 2
@@ -243,7 +364,12 @@ def test_ai_get_next_hit_with_key_std(monkeypatch):
     assert ai.set_next_hit_with_key(hit_size) == [(0, 1)]
 
 
-def test_ai_get_next_hit_with_key_random(monkeypatch):
+def test_ai_set_next_hit_with_key_random(monkeypatch):
+    """
+    Test ai's set_next_hit_with_key() method\n
+    This test targets the standard use case,
+    mocked random
+    """
     board = Board(3, 3)
     ai = Ai(board)
     hit_size = 2
@@ -252,18 +378,143 @@ def test_ai_get_next_hit_with_key_random(monkeypatch):
     assert len(ai.set_next_hit_with_key(hit_size)) == 1
 
 
-def test_ai_set_next_hit_miss_draw_coordinates():
-    board = Board(2, 2)
-    all_coordinates = [(0, 0), (0, 1), (1, 1), (1, 0)]
-    ai = Ai(board)
-    hit_result = (False, False, 0)
+def test_ai_set_next_hit_success(monkeypatch):
+    """
+    Test the ai.set_next_hit() method.\n
+    This test targets the case when last hit was
+    successful
+    """
+    board_ai = Board(3, 3)
+    board_player = Board(3, 3)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(0, 0), (0, 1)])
+    player.board.add_warship([(1, 0), (1, 1), (1, 2)])
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: (0, 0))
+    hit = ai.smart_hit()
+    assert hit == (0, 0)
+    monkeypatch.undo()
+    hit_result = player.board.hit(hit)
+    assert hit_result == (True, False, 2)
     ai.set_next_hit(hit_result)
-    assert ai._Ai__next_hit in all_coordinates
+    hit = ai.smart_hit()
+    assert hit in [(0, 1), (1, 0)]
 
 
-# def test_ai_set_next_hit_miss_success_hits(monkeypatch):
-#     board = Board(2, 2)
-#     ai = Ai(board)
-#     hit_result = (False, False, 0)
-#     hits_size_2 = [(1, 1)]
-#     monkeypatch.setattr(ai, "_Ai__success_hit", hits_size_2)
+def test_ai_set_next_hit_miss_and_draw_coordinates(monkeypatch):
+    """
+    Test the ai.set_next_hit() method.\n
+    This test targets the case when last hit
+    was missed and there were no successful hits before
+    """
+    board_ai = Board(2, 2)
+    board_player = Board(2, 2)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(0, 0), (0, 1)])
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: (1, 1))
+    hit = ai.smart_hit()
+    assert hit == (1, 1)
+    monkeypatch.undo()
+    hit_result = player.board.hit(hit)
+    assert hit_result == (False, False, 0)
+    ai.set_next_hit(hit_result)
+    hit = ai.smart_hit()
+    left_coordinates = [(0, 0), (0, 1), (1, 0)]
+    assert hit in left_coordinates
+
+
+def test_ai_set_next_hit_miss_and_last_success_hit(monkeypatch):
+    """
+    Test the ai.set_next_hit() method.\n
+    This test targets the case when last hit
+    was missed and there was a successful hit before
+    """
+    board_ai = Board(2, 2)
+    board_player = Board(2, 2)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(0, 0), (0, 1)])
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: (0, 1))
+    hit = ai.smart_hit()
+    assert hit == (0, 1)
+    monkeypatch.undo()
+    hit_result = player.board.hit(hit)
+    assert hit_result == (True, False, 2)
+    monkeypatch.setattr(ai, "set_next_hit_with_key", lambda key: (1, 1))
+    ai.set_next_hit(hit_result)
+    hit = ai.smart_hit()
+    assert hit == (1, 1)
+    monkeypatch.undo()
+    hit_result = player.board.hit(hit)
+    assert hit_result == (False, False, 0)
+    ai.set_next_hit(hit_result)
+    hit = ai.smart_hit()
+    assert hit == (0, 0)
+
+
+def test_ai_set_next_hit_sink_and_last_success_hit(monkeypatch):
+    """
+    Test the ai.set_next_hit() method.\n
+    This test targets the case when last hit sank
+    a warship and there was a successful hit at a
+    different warship before\n
+    """
+    board_ai = Board(3, 3)
+    board_player = Board(3, 3)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(0, 0), (0, 1)])
+    player.board.add_warship([(1, 0), (1, 1), (1, 2)])
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: (1, 0))
+    hit = ai.smart_hit()
+    assert hit == (1, 0)
+    monkeypatch.undo()
+    hit_result = player.board.hit(hit)
+    assert hit_result == (True, False, 3)
+    monkeypatch.setattr(ai, "set_next_hit_with_key", lambda key: (0, 0))
+    ai.set_next_hit(hit_result)
+    hit = ai.smart_hit()
+    assert hit == (0, 0)
+    monkeypatch.undo()
+    hit_result = player.board.hit(hit)
+    assert hit_result == (True, False, 2)
+    ai.set_next_hit(hit_result)
+    hit = ai.smart_hit()
+    assert hit == (0, 1)
+    hit_result = player.board.hit(hit)
+    assert hit_result == (True, True, 2)
+    ai.set_next_hit(hit_result)
+    hit = ai.smart_hit()
+    assert hit in [(1, 1), (1, 2)]
+
+
+def test_ai_set_next_hit_sink_and_draw_coordinates(monkeypatch):
+    """
+    Test the ai.set_next_hit() method.\n
+    This test targets the case when last hit sank
+    a warship and there were no successful hits at
+    different warships before\n
+    """
+    board_ai = Board(3, 3)
+    board_player = Board(3, 3)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(0, 0), (0, 1)])
+    player.board.add_warship([(1, 0), (1, 1), (1, 2)])
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: (0, 0))
+    hit = ai.smart_hit()
+    assert hit == (0, 0)
+    monkeypatch.undo()
+    hit_result = player.board.hit(hit)
+    assert hit_result == (True, False, 2)
+    monkeypatch.setattr(ai, "set_next_hit_with_key", lambda key: (0, 1))
+    ai.set_next_hit(hit_result)
+    hit = ai.smart_hit()
+    assert hit == (0, 1)
+    monkeypatch.undo()
+    hit_result = player.board.hit(hit)
+    assert hit_result == (True, True, 2)
+    ai.set_next_hit(hit_result)
+    hit = ai.smart_hit()
+    assert hit in [(0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]

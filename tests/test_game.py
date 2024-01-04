@@ -1,4 +1,3 @@
-from re import L
 from board import Board
 from game import Game, GameEnded
 from player import Player, Ai

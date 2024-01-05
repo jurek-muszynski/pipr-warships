@@ -1,7 +1,7 @@
 class Warship():
     """
-    Warship class. Represents a single warship on the board,
-    consisting of [1-5] blocks
+    Warship class. Represents a single warship on the board built
+    of blocks
 
     :param blocks: Represents the lists of blocks
     :type blocks: list[tuple[int, int]]
@@ -12,7 +12,7 @@ class Warship():
     :param hits: Represents warship's hit count
     :type hits: int
 
-    :param hit_blocks: Represents warships blocks that were hit
+    :param hit_blocks: Represents warship's blocks that were hit
     :type hit_blocks: list[tuple[int, int]]
     """
 
@@ -67,7 +67,7 @@ class Warship():
     def __str__(self) -> str:
         """
         Returns a simple description of a warship:
-        {1-5} mast warship.
+        e.g. 1 mast warship.
         """
         return f"{len(self.__blocks)} mast warship"
 

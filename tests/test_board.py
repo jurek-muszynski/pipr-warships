@@ -24,11 +24,11 @@ def test_create_board_invalid():
         Board(0, 1)
     with pytest.raises(ValueError):
         Board(27, 1)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidWarshipCountError):
         Board(1, 0)
     with pytest.raises(ValueError):
         Board(-10, 5)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidWarshipCountError):
         Board(1, -1)
     with pytest.raises(InvalidWarshipCountError):
         Board(4, 5)

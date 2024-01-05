@@ -66,6 +66,10 @@ def test_game_result_ai(monkeypatch):
 
 
 def test_game_player_won(monkeypatch):
+    """
+    Test game's main functionality.\n
+    This test targets the case, when the player wins
+    """
     game = Game("2")
     monkeypatch.setattr("game.sleep", lambda _: None)
     monkeypatch.setattr("builtins.print", lambda _: None)
@@ -81,6 +85,10 @@ def test_game_player_won(monkeypatch):
 
 
 def test_game_ai_won(monkeypatch):
+    """
+    Test game's main functionality.\n
+    This test targets the case, when the ai wins
+    """
     game = Game("2")
     monkeypatch.setattr("player.sleep", lambda _: None)
     monkeypatch.setattr("game.sleep", lambda _: None)

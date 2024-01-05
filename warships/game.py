@@ -56,7 +56,7 @@ class Game():
     def players_turn(self) -> None:
         """
         Lets the player choose locations for next hits.\n
-        Raises CoordinatesOutOfRangeError if choosen coordinates
+        Raises CoordinatesOutOfRangeError if chosen coordinates
         are out of the board's bounds.\n
         Raises InvalidHitInputError if entered hit is invalid.
         """
@@ -99,7 +99,7 @@ class Game():
     def result_player(self) -> None:
         """
         Prints the result of the game if all
-        Ai's ships had been sunk.\n
+        Ai's ships have been sunk.\n
 
         Raises GameEnded Exception if the player has won
         """
@@ -118,7 +118,7 @@ class Game():
     def result_ai(self) -> None:
         """
         Prints the result of the game if all
-        player's ships had been sunk
+        player's ships have been sunk
 
         Raises GameEnded Exception if the Ai has won
         """

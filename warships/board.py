@@ -50,7 +50,7 @@ class Board():
     """
     Board class. Contains attributes:
 
-    :param size: number of either rows/columns, as the board is a square
+    :param size: number of either rows/columns
     :type size: int
 
     :param num_warships: number of warships situated on the board, <= size
@@ -59,7 +59,7 @@ class Board():
     :param warships: warship objects situated on the board
     :type warships: list[Warship]
 
-    :param hit: hit coordinates
+    :param hit: list of hit locations
     :type hit: list[tuple[int, int]]
     """
 
@@ -68,7 +68,7 @@ class Board():
         Creates an instance of the board class.\n
         Raises ValueError if size is less/equal 0.\n
         Raises ValueError if size is greater than MAX_BOARD_SIZE.\n
-        Raises ValueError if number of warships is less/equal 0.\n
+        Raises InvalidWarshipCountError if number of warships is less/equal 0\n
         Raises InvalidWarshipCountError if number of warships is greater
         than size.\n
         Initially 'warships' and 'hit' lists are empty.
@@ -84,7 +84,7 @@ class Board():
         else:
             self.__size = size
         if (num_warships <= 0):
-            raise ValueError(num_warships)
+            raise InvalidWarshipCountError(num_warships)
         elif num_warships > self.__size:
             raise InvalidWarshipCountError(num_warships)
         else:
@@ -251,12 +251,12 @@ class Board():
     def hit(self, coordinates: tuple[int, int]) -> tuple[bool, bool, int]:
         """
         Hits specified coordinates.\n
-        Returns a tuple of 3 values describing the shot's result
+        Returns a tuple of 3 values describing the hit's result
         (was_hit, was_sunk, hit_warship_size)\n
         Raises CoordinatesOutOfRangeError if passed coordinates
         out of the board's bounds
 
-        :param coordinates: coordinates of a cell on the board
+        :param coordinates: coordinates of a location on the board
         :type coordinates: tuple[int, int]
         """
         x, y = coordinates
@@ -266,7 +266,7 @@ class Board():
             if (x, y) not in self.__hit:
                 self.__hit.append((x, y))
             else:
-                print("You've already hit here before")
+                print_hit_warships_io(False, False, 0)
                 return (False, False, 0)
             for warship in self.__warships:
                 if warship.was_hit(coordinates):
@@ -282,7 +282,7 @@ class Board():
         """
         Returns a string representation of all warships with
         their respective types and the number of those specific
-        warships left on the board
+        warships left on the board\n
         e.g. 1 mast warship: x1
         """
         return print_warships_io(self.__warships)
@@ -290,8 +290,8 @@ class Board():
     def print_board(self, show_warships: bool = False) -> str:
         """
         Prints the board in the console window.\n
-        If show_warships param is set to True, then it
-        prints the locations of warships, otherwise
+        If show_warships param is True, then it
+        shows the locations of warships, otherwise
         they remain hidden
 
         :param show_warships: determines the visibility of printed warships

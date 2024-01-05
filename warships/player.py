@@ -23,7 +23,7 @@ class BasePlayer():
     :param board: a board with player's warships
     :type board: Board
 
-    :param warship_types: dictionary of types of warships and their amount
+    :param warship_types: count of warships of particular sizes
     :type warship_types: dict[int, int]
     """
 
@@ -57,7 +57,7 @@ class Player(BasePlayer):
     :param board: a board with player's warships
     :type board: Board
 
-    :param warship_types: dictionary of types of warships and their amount
+    :param warship_types: count of warships of particular sizes
     :type warship_types: dict[int, int]
     """
 

@@ -72,6 +72,7 @@ class Game():
             except InvalidHitInputError as e:
                 print(str(e))
         sleep(1)
+        print(self.__ai.board.print_board())
         self.result_player()
 
     def ai_turn(self) -> None:
@@ -96,7 +97,6 @@ class Game():
         Ai's ships had been sunk.\n
 
         Raises GameEnded Exception if the player has won
-
         """
         if self.__ai.board.all_sunk():
             sleep(1)
@@ -135,12 +135,15 @@ class Game():
         Exchanges turns between the player and the Ai until
         GameEnded Exception is raised
         """
+        round = 1
         self.__player.place_warships()
         while True:
             try:
+                print(f"Round {round}.")
                 self.players_turn()
                 self.ai_turn()
-                # clear()
+                clear()
+                round += 1
             except GameEnded:
                 sleep(1)
                 clear()

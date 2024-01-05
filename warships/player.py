@@ -2,7 +2,7 @@ from board import Board
 from player_io import pick_location
 from consts import MAX_NUM_OF_WARSHIPS
 from random import choice
-from system import clear
+from system_io import clear
 from time import sleep
 
 
@@ -16,9 +16,9 @@ class InvalidHitInputError(Exception):
         super().__init__("Invalid Input")
 
 
-class Player():
+class BasePlayer():
     """
-    Player class. Contains attributes:
+    BasePlayer (abstract) class. Contains attributes:
 
     :param board: a board with player's warships
     :type board: Board
@@ -29,7 +29,7 @@ class Player():
 
     def __init__(self, board: Board) -> None:
         """
-        Creates an instance of the Player class.\n
+        Creates an instance of the BasePlayer class.\n
         When initialized, the board is empty.
 
         :param board: player's board
@@ -49,6 +49,28 @@ class Player():
     def warship_types(self) -> dict[int, int]:
         return self.__warship_types
 
+
+class Player(BasePlayer):
+    """
+    Player class. Contains attributes:
+
+    :param board: a board with player's warships
+    :type board: Board
+
+    :param warship_types: dictionary of types of warships and their amount
+    :type warship_types: dict[int, int]
+    """
+
+    def __init__(self, board: Board) -> None:
+        """
+        Creates an instance of the Player class.\n
+        When initialized, the board is empty.
+
+        :param board: player's board
+        :type board: Board
+        """
+        super().__init__(board)
+
     def hit(self, hit_input: str) -> tuple[int, int]:
         """
         Parses a hit entered by the user to a tuple of integers.\n
@@ -58,6 +80,8 @@ class Player():
         :type hit: str
 
         """
+        if not hit_input:
+            raise InvalidHitInputError()
         x = str.title(hit_input[0])
         if not x.isalpha():
             raise InvalidHitInputError()
@@ -94,12 +118,11 @@ class Player():
         The order is descending, biggest ships are to be chosen first.
         """
         sleep(1)
-        for size in self.__warship_types:
+        for size in self.warship_types:
             clear()
-            to_add = self.__warship_types.get(size)
+            to_add = self.warship_types.get(size)
             added = 0
             while added < to_add:
-                # title = f"Place your {size} mast warship"
                 available_locations = (self.board.get_available_locations_horizontal(
                     size)) + (self.board.get_available_locations_vertical(size))
                 unique_available_locations = []
@@ -107,9 +130,7 @@ class Player():
                     location) for location in available_locations if
                     location not in unique_available_locations]
                 options = self._format_locations(unique_available_locations)
-                # option, index = pick(
-                #     options, title, indicator="->", default_index=0)
-                index = pick_location(options, to_add)
+                index = pick_location(options, size)
                 self.board.add_warship(
                     unique_available_locations[index]
                 )
@@ -119,9 +140,9 @@ class Player():
         clear()
 
 
-class Ai(Player):
+class Ai(BasePlayer):
     """
-    Ai class, derives from Player class. Contains attributes:
+    Ai class, derives from BasePlayer class. Contains attributes:
 
     :param board: a board with ai's warships
     :type board: Board

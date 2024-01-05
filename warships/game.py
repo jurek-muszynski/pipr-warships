@@ -4,7 +4,7 @@ from player import Player, Ai
 from player import InvalidHitInputError
 from time import sleep
 from consts import MAX_NUM_OF_WARSHIPS
-from system import clear
+from system_io import clear
 
 
 class GameEnded(Exception):

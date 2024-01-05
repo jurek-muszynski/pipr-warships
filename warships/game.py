@@ -49,6 +49,10 @@ class Game():
                   else MAX_NUM_OF_WARSHIPS))
         self.__ai.board.draw_locations()
 
+    @property
+    def player(self) -> Player:
+        return self.__player
+
     def players_turn(self) -> None:
         """
         Lets the player choose locations for next hits.\n
@@ -73,6 +77,7 @@ class Game():
                 print(str(e))
         sleep(1)
         print(self.__ai.board.print_board())
+        sleep(1)
         self.result_player()
 
     def ai_turn(self) -> None:

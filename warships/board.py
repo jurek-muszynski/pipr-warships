@@ -251,8 +251,6 @@ class Board():
     def hit(self, coordinates: tuple[int, int]) -> tuple[bool, bool, int]:
         """
         Hits specified coordinates.\n
-        Prints appropriate message depending on the
-        result of that shot\n
         Returns a tuple of 3 values describing the shot's result
         (was_hit, was_sunk, hit_warship_size)\n
         Raises CoordinatesOutOfRangeError if passed coordinates
@@ -270,7 +268,15 @@ class Board():
             else:
                 print("You've already hit here before")
                 return (False, False, 0)
-            return print_hit_warships_io(self.__warships, coordinates)
+            for warship in self.__warships:
+                if warship.was_hit(coordinates):
+                    if warship.was_sunk():
+                        print_hit_warships_io(True, True, warship)
+                        return (True, True, warship.size)
+                    print_hit_warships_io(True, False, warship)
+                    return (True, False, warship.size)
+            print_hit_warships_io(False, False)
+            return (False, False, 0)
 
     def warships_str(self) -> str:
         """

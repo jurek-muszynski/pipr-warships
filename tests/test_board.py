@@ -1,6 +1,6 @@
-from board import Board
-from board import (InvalidWarshipCountError, InvalidWarshipError,
-                   CoordinatesOutOfRangeError)
+from classes.board import Board
+from classes.board import (InvalidWarshipCountError, InvalidWarshipError,
+                           CoordinatesOutOfRangeError)
 import pytest
 
 
@@ -24,11 +24,11 @@ def test_create_board_invalid():
         Board(0, 1)
     with pytest.raises(ValueError):
         Board(27, 1)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidWarshipCountError):
         Board(1, 0)
     with pytest.raises(ValueError):
         Board(-10, 5)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidWarshipCountError):
         Board(1, -1)
     with pytest.raises(InvalidWarshipCountError):
         Board(4, 5)
@@ -68,6 +68,9 @@ def test_board_add_warship_invalid():
         board.add_warship(blocks)
     with pytest.raises(InvalidWarshipError):
         board.add_warship([(0, 4)])
+    board.add_warship([(0, 0)])
+    with pytest.raises(InvalidWarshipError):
+        board.add_warship([(0, 0), (0, 1)])
 
 
 def test_board_is_location_available():
@@ -180,7 +183,7 @@ def test_board_draw_location_std_chosen(monkeypatch):
     This test targets the standard use case, mocked drawn location
     """
     board = Board(2, 2)
-    monkeypatch.setattr("board.choice", lambda x: x[0])
+    monkeypatch.setattr("classes.board.choice", lambda x: x[0])
     drawed_locations = board.draw_location(2)
     assert board.draw_location(1) == [(0, 0)]
     assert drawed_locations == [(0, 0), (1, 0)]

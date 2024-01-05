@@ -1,4 +1,4 @@
-from warship import Warship
+from classes.warship import Warship
 
 
 def print_labels_horizontal_io(size: int) -> str:
@@ -17,7 +17,8 @@ def print_labels_horizontal_io(size: int) -> str:
 
 
 def print_board_io(size: int, locations_warships: list[tuple[int, int]],
-                   locations_hit: list[tuple[int, int]], show_warships: bool) -> str:
+                   locations_hit: list[tuple[int, int]],
+                   show_warships: bool) -> str:
     """
     Returns the board's string representation.\n
     [#] for hits missed,\n
@@ -77,7 +78,8 @@ def print_warships_io(warships: list[Warship]) -> str:
     return warship_str
 
 
-def print_hit_warships_io(was_hit: bool, was_sunk: bool, warship: Warship = None) -> None:
+def print_hit_warships_io(was_hit: bool, was_sunk: bool,
+                          warship: Warship = None) -> None:
     """
     Presents an appropriate message depending on the
     result of the hit\n
@@ -88,7 +90,8 @@ def print_hit_warships_io(was_hit: bool, was_sunk: bool, warship: Warship = None
     :param was_sunk: indicates whether the warship was sunk
     :type was_sunk: bool
 
-    :param warship: hit warship, defaults to None
+    :param warship: hit warship, defaults to None. If 0, then that hit was
+    already made before
     :type warships: Warship
 
     """
@@ -100,5 +103,8 @@ def print_hit_warships_io(was_hit: bool, was_sunk: bool, warship: Warship = None
             print(f"{str(warship)} hit")
             return
         case False, False:
-            print("Miss")
+            if warship == 0:
+                print("You've already hit here before")
+            else:
+                print("Miss")
             return

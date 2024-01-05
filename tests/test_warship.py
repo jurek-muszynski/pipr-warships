@@ -1,4 +1,4 @@
-from warship import Warship
+from classes.warship import Warship
 import pytest
 
 

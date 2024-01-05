@@ -1,7 +1,7 @@
-from board import Board
-from board import CoordinatesOutOfRangeError
-from player import Player, Ai
-from player import InvalidHitInputError
+from classes.board import Board
+from classes.board import CoordinatesOutOfRangeError
+from classes.player import Player, Ai
+from classes.player import InvalidHitInputError
 import pytest
 
 
@@ -119,6 +119,55 @@ def test_ai_remove_hit_before_no_hits():
     assert ai.remove_hit_before([(0, 0)]) == [(0, 0)]
 
 
+def test_ai_get_all_possible_locations_none_sunk():
+    """
+    Test ai's remove_hit_before() method\n
+    This test targets the case, when no ships
+    have been sunk yet
+    """
+    board_ai = Board(2, 2)
+    board_player = Board(2, 2)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(0, 0)])
+    player.board.add_warship([(1, 1), (0, 1)])
+    assert len(ai.get_all_possible_locations()) == 16
+
+
+def test_ai_get_all_possible_locations_one_mast_sunk(monkeypatch):
+    """
+    Test ai's remove_hit_before() method\n
+    This test targets the case, when a one mast
+    warship has been sunk
+    """
+    board_ai = Board(2, 2)
+    board_player = Board(2, 2)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: (0, 0))
+    player.board.add_warship([(0, 0)])
+    player.board.add_warship([(1, 1), (0, 1)])
+    hit = player.board.hit(ai.smart_hit())
+    ai.set_next_hit(hit)
+    assert (ai.get_all_possible_locations()) == [
+        (1, 0), (1, 1), (0, 1), (1, 1)]
+
+
+def test_ai_check_if_not_hit_before(monkeypatch):
+    """
+    Test ai's check_if_not_hit_before() method\n
+    This test targets standard use case
+    """
+    board_ai = Board(2, 2)
+    board_player = Board(2, 2)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    assert ai.check_if_not_hit_before([(0, 0)])
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: (0, 0))
+    player.board.hit(ai.smart_hit())
+    assert not ai.check_if_not_hit_before([(0, 0)])
+
+
 def test_ai_smart_hit_no_hits(monkeypatch):
     """
     Test ai's smart_hit() method\n
@@ -206,7 +255,7 @@ def test_ai_draw_coordinates_chosen_coors(monkeypatch):
     hit_before = [(1, 0), (1, 1)]
     available = [hit for hit in all_coordinates if hit not in hit_before]
     monkeypatch.setattr(ai, "remove_hit_before", lambda list: available)
-    monkeypatch.setattr("player.choice", lambda list: list[0])
+    monkeypatch.setattr("classes.player.choice", lambda list: list[0])
     assert ai.draw_coordinates() == (0, 0)
 
 
@@ -360,7 +409,8 @@ def test_ai_set_next_hit_with_key_chosen(monkeypatch):
     hit_size = 2
     monkeypatch.setattr(ai, "get_next_possible_locations", lambda size, hits: [
                         [(0, 1)], [(1, 2)], [(2, 1)], [(1, 0)]])
-    monkeypatch.setattr("player.choice", lambda locations: locations[0])
+    monkeypatch.setattr("classes.player.choice",
+                        lambda locations: locations[0])
     assert ai.set_next_hit_with_key(hit_size) == [(0, 1)]
 
 

@@ -1,10 +1,10 @@
-from board import Board
-from board import CoordinatesOutOfRangeError
-from player import Player, Ai
-from player import InvalidHitInputError
+from .board import Board
+from .board import CoordinatesOutOfRangeError
+from .player import Player, Ai
+from .player import InvalidHitInputError
 from time import sleep
-from consts import MAX_NUM_OF_WARSHIPS
-from system_io import clear
+from utils.consts import MAX_NUM_OF_WARSHIPS
+from utils.system_io import clear
 
 
 class GameEnded(Exception):
@@ -49,10 +49,14 @@ class Game():
                   else MAX_NUM_OF_WARSHIPS))
         self.__ai.board.draw_locations()
 
+    @property
+    def player(self) -> Player:
+        return self.__player
+
     def players_turn(self) -> None:
         """
         Lets the player choose locations for next hits.\n
-        Raises CoordinatesOutOfRangeError if choosen coordinates
+        Raises CoordinatesOutOfRangeError if chosen coordinates
         are out of the board's bounds.\n
         Raises InvalidHitInputError if entered hit is invalid.
         """
@@ -71,6 +75,8 @@ class Game():
                 print(str(e))
             except InvalidHitInputError as e:
                 print(str(e))
+        sleep(1)
+        print(self.__ai.board.print_board())
         sleep(1)
         self.result_player()
 
@@ -93,38 +99,40 @@ class Game():
     def result_player(self) -> None:
         """
         Prints the result of the game if all
-        Ai's ships had been sunk.\n
+        Ai's ships have been sunk.\n
 
         Raises GameEnded Exception if the player has won
-
         """
         if self.__ai.board.all_sunk():
             sleep(1)
             clear()
             sleep(1)
-            print("ALL AI'S SHIPS SANK")
-            sleep(1)
+            print("ALL AI'S SHIPS HAVE BEEN SANK")
+            sleep(2)
             clear()
             sleep(1)
             print("YOU'VE WON!")
+            sleep(1)
             raise GameEnded()
         sleep(1)
 
     def result_ai(self) -> None:
         """
         Prints the result of the game if all
-        player's ships had been sunk
+        player's ships have been sunk
 
         Raises GameEnded Exception if the Ai has won
         """
         if self.__player.board.all_sunk():
             sleep(1)
             clear()
-            print("ALL YOUR SHIPS SANK!")
             sleep(1)
+            print("ALL YOUR SHIPS HAVE BEEN SANK!")
+            sleep(2)
             clear()
             sleep(1)
             print("YOU'VE LOST")
+            sleep(1)
             raise GameEnded()
         sleep(1)
 
@@ -135,12 +143,15 @@ class Game():
         Exchanges turns between the player and the Ai until
         GameEnded Exception is raised
         """
+        round = 1
         self.__player.place_warships()
         while True:
             try:
+                print(f"Round {round}.")
                 self.players_turn()
                 self.ai_turn()
-                # clear()
+                clear()
+                round += 1
             except GameEnded:
                 sleep(1)
                 clear()

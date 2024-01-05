@@ -16,7 +16,7 @@
 
 ## Cel Projektu:
 
-Głównym celem projektu było stworzenie interaktywnej aplikacji do gry w statki, pozwalającej na walkę z komputerem. Użytkownik miał zmierzyć się z „wirtualnym” przeciwnikiem, który naśladuje człowieka i jest w stanie wykonywać logiczne ruchy, w celu zatopienia wszystkich statków.
+Głównym celem projektu było stworzenie interaktywnej aplikacji do gry w statki, pozwalającej na rozgrywkę z komputerem. Użytkownik miał zmierzyć się z „wirtualnym” przeciwnikiem, który naśladuje człowieka i jest w stanie wykonywać logiczne ruchy, w celu zatopienia wszystkich statków.
 
 ## Opis Projektu:
 
@@ -24,13 +24,15 @@ Projekt został wykonany w języku Python a rozgrywka odbywa się poprzez okno k
 
 ## Użyte klasy:
 
-**_Warship_** – klasa opisująca pojedynczy statek na planszy, każdy z nich wyróżnia się w szczególności rozmiarem i „blokami”, które reprezentują poszczególne współrzędne tworzące ten statek. Statek może być maksymalnie 5 masztowy i przewidziano jedynie „jednowymiarowe” warianty, tzn. zawsze jeden z wymiarów statku będzie wynosił 1 (długość lub szerokość)
+**_Warship_** – klasa opisująca pojedynczy statek na planszy, każdy z nich wyróżnia się w szczególności rozmiarem i „blokami”, które reprezentują poszczególne współrzędne tworzące ten statek. Statek może być maksymalnie 5 masztowy i przewidziano jedynie „jednowymiarowe” warianty, tj. zawsze jeden z wymiarów statku będzie wynosił 1 (długość lub szerokość)
 
 **_Board_** – klasa opisująca planszę. Plansza jest zawsze macierzą kwadratową a jej możliwe wymiary należą do przedziału <1x1, 26x26>. Plansze NxN, gdzie N <= 4 zawierają N statków, natomiast plansze NxN, gdzie N > 4, zawierają zawsze 5 statków, (statki są obiektami klasy Warship)
 
-**_Player_** – klasa opisująca gracza. Każdy gracz charakteryzuje się swoją własną planszą (obiekt klasy Board), na której dobrowolnie alokuje przypisane statki.
+**_BasePlayer_** – klasa abstrakcyjna opisująca gracza. Każdy gracz charakteryzuje się swoją własną planszą (obiekt klasy Board) oraz słownikiem zawierającym typy statków wraz z ich liczbą na planszy.
 
-**_Ai_** – klasa opisująca „wirtualnego” gracza, dziedziczy po klasie Player. Dla jej planszy ułożenie statków jest wybierane w pełni losowo. Wykonuje logiczne ruchy, na podstawie rezultatów poprzednich strzałów. Dokonuje stałego zestawienia wszystkich uprzednio wykonanych strzałów oraz strzałów trafionych aby następnie wybrać możliwe pozostałe „bloki” jeszcze nie zatopionych statków.
+**_Player_** – klasa opisująca gracza, którym będzie użytkownik. Dziedziczy po klasie BasePlayer i umożliwia wybór pozycji do ułożenia statków na planszy.
+
+**_Ai_** – klasa opisująca „wirtualnego” gracza, dziedziczy po klasie BasePlayer. Dla jej planszy ułożenie statków jest wybierane w pełni losowo. Wykonuje logiczne ruchy, na podstawie rezultatów poprzednich strzałów. Dokonuje stałego zestawienia wszystkich uprzednio wykonanych strzałów oraz strzałów trafionych aby następnie wybrać możliwe pozostałe „bloki” jeszcze nie zatopionych statków.
 
 **_Game_** – klasa opisująca główną logikę rozgrywki. Zarządza kolejnością ruchów, pilnuje stanu gry i ustala rezultat na podstawie przebiegu gry.
 

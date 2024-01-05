@@ -1,6 +1,6 @@
-from game import Game
+from classes.game import Game
 from time import sleep
-from system_io import clear
+from utils.system_io import clear
 from os import name
 
 
@@ -54,7 +54,7 @@ def instructions() -> None:
         print("2 > Chose where to place your warships")
     else:
         print(
-            "2 > Use the arrow keys to place your warships according to your liking")
+            "2 > Use the arrow keys to place your warships")
     sleep(1)
     print("\nGAME ON\n")
     print("1 > Take turns with the AI on hitting the opponent's ships")
@@ -63,7 +63,8 @@ def instructions() -> None:
     print(
         "3 > x will be displayed in the chosen coordinates, if the hit was successful")
     print(
-        "4 > # will be displayed in the chosen coordinates, if the hit a miss\n")
+        "4 > # will be displayed in the chosen coordinates, if the hit a miss")
+    print("\n")
     sleep(1)
     input("Press Enter to continue: ")
     clear()

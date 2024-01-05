@@ -1,8 +1,8 @@
-from board import Board
-from player_io import pick_location
-from consts import MAX_NUM_OF_WARSHIPS
+from .board import Board
+from utils.player_io import pick_location
+from utils.consts import MAX_NUM_OF_WARSHIPS
 from random import choice
-from system_io import clear
+from utils.system_io import clear
 from time import sleep
 
 
@@ -23,7 +23,7 @@ class BasePlayer():
     :param board: a board with player's warships
     :type board: Board
 
-    :param warship_types: dictionary of types of warships and their amount
+    :param warship_types: count of warships of particular sizes
     :type warship_types: dict[int, int]
     """
 
@@ -57,7 +57,7 @@ class Player(BasePlayer):
     :param board: a board with player's warships
     :type board: Board
 
-    :param warship_types: dictionary of types of warships and their amount
+    :param warship_types: count of warships of particular sizes
     :type warship_types: dict[int, int]
     """
 
@@ -93,7 +93,8 @@ class Player(BasePlayer):
         return x, y
 
     def _format_locations(self,
-                          locations: list[list[tuple[int, int]]]) -> list[list[str]]:
+                          locations: list[list[
+                              tuple[int, int]]]) -> list[list[str]]:
         """
         Parses a list of locations so that they could be presented
         in the same format as the user enterd them, e.g [(0,0)] -> ["A0"].
@@ -123,8 +124,9 @@ class Player(BasePlayer):
             to_add = self.warship_types.get(size)
             added = 0
             while added < to_add:
-                available_locations = (self.board.get_available_locations_horizontal(
-                    size)) + (self.board.get_available_locations_vertical(size))
+                available_locations = (
+                    self.board.get_available_locations_horizontal(size)) + (
+                        self.board.get_available_locations_vertical(size))
                 unique_available_locations = []
                 [unique_available_locations.append(
                     location) for location in available_locations if
@@ -153,7 +155,8 @@ class Ai(BasePlayer):
     :param success_hit: all successful hits made by the ai
     :type success_hit: list[tuple[int, int]]
 
-    :param warships_hit: successfully hit locations assigned to the sizes of hit warships
+    :param warships_hit: successfully hit locations assigned to
+    the sizes of hit warships
     :type warships_hit: dict[int, list[tuple[int,int]]]
 
     :param next_hit: hit to be made next by the ai
@@ -176,9 +179,10 @@ class Ai(BasePlayer):
         self.__next_hit = 0
 
     def remove_hit_before(self,
-                          locations: list[tuple[int, int]]) -> list[tuple[int, int]]:
+                          locations: list[
+                              tuple[int, int]]) -> list[tuple[int, int]]:
         """
-        Returns a list of locations without those already hit at before.
+        Returns a list of locations without those already hit before.
 
         :param locations: list of locations(coordinates)
         :type locations: list[tuple[int,int]]
@@ -194,7 +198,8 @@ class Ai(BasePlayer):
         warships_coordinates = sum(self.__warships_hit.values(), [])
         for x in range(self.board.size):
             for y in range(self.board.size):
-                if (x, y) not in warships_coordinates:
+                if ((x, y) not in warships_coordinates and
+                        (x, y) in self.get_all_possible_locations()):
                     all_locations.append((x, y))
         return choice(self.remove_hit_before(all_locations))
 
@@ -235,6 +240,35 @@ class Ai(BasePlayer):
                 if (len(locations_inner) == warship_size):
                     locations.append(locations_inner)
         return locations
+
+    def get_all_possible_locations(self) -> list[tuple[int, int]]:
+        """
+        Returns all possible locations of warships that haven't been sunk yet
+        """
+        all_locations = []
+        for size in self.__warships_hit.keys():
+            for locations in self.get_possible_locations_horizontal(size):
+                if self.check_if_not_hit_before(locations):
+                    all_locations.append(locations)
+            for locations in self.get_possible_locations_vertical(size):
+                if self.check_if_not_hit_before(locations):
+                    all_locations.append(locations)
+        return sum(all_locations, [])
+
+    def check_if_not_hit_before(self,
+                                locations: list[tuple[int, int]]) -> bool:
+        """
+        Checks if a passed list of locations contains coordinates,
+        which have already been hit before
+
+        :param locations: list of locations
+        :type locations: list[tuple[int, int]]
+        """
+        valid = True
+        for location in locations:
+            if location in self.__hit:
+                valid = False
+        return valid
 
     def flatten_valid_locations(self, locations: list[list[tuple[int, int]]],
                                 hits: list[tuple[int, int]]) -> list[tuple[int, int]]:
@@ -284,8 +318,8 @@ class Ai(BasePlayer):
 
     def get_warship_key(self, location: tuple[int, int]) -> int:
         """
-        Returns the size of a warship, of which
-        one of the locations were hit.
+        Returns the size of a warship, which
+        one of the locations was hit.
 
         :param location: hit coordinates of a warship
         :type location: tuple[int,int]
@@ -340,6 +374,7 @@ class Ai(BasePlayer):
             if was_sunk:
                 for coors in self.__warships_hit[size]:
                     self.__success_hit.remove(coors)
+                self.__warships_hit.pop(size)
                 if len(self.__success_hit) == 0:
                     self.__next_hit = 0
                     return

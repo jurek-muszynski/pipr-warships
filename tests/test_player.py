@@ -119,6 +119,55 @@ def test_ai_remove_hit_before_no_hits():
     assert ai.remove_hit_before([(0, 0)]) == [(0, 0)]
 
 
+def test_ai_get_all_possible_locations_none_sunk():
+    """
+    Test ai's remove_hit_before() method\n
+    This test targets the case, when no ships
+    have been sunk yet
+    """
+    board_ai = Board(2, 2)
+    board_player = Board(2, 2)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    player.board.add_warship([(0, 0)])
+    player.board.add_warship([(1, 1), (0, 1)])
+    assert len(ai.get_all_possible_locations()) == 16
+
+
+def test_ai_get_all_possible_locations_one_mast_sunk(monkeypatch):
+    """
+    Test ai's remove_hit_before() method\n
+    This test targets the case, when a one mast
+    warship has been sunk
+    """
+    board_ai = Board(2, 2)
+    board_player = Board(2, 2)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: (0, 0))
+    player.board.add_warship([(0, 0)])
+    player.board.add_warship([(1, 1), (0, 1)])
+    hit = player.board.hit(ai.smart_hit())
+    ai.set_next_hit(hit)
+    assert (ai.get_all_possible_locations()) == [
+        (1, 0), (1, 1), (0, 1), (1, 1)]
+
+
+def test_ai_check_if_not_hit_before(monkeypatch):
+    """
+    Test ai's check_if_not_hit_before() method\n
+    This test targets standard use case
+    """
+    board_ai = Board(2, 2)
+    board_player = Board(2, 2)
+    ai = Ai(board_ai)
+    player = Player(board_player)
+    assert ai.check_if_not_hit_before([(0, 0)])
+    monkeypatch.setattr(ai, "draw_coordinates", lambda: (0, 0))
+    player.board.hit(ai.smart_hit())
+    assert not ai.check_if_not_hit_before([(0, 0)])
+
+
 def test_ai_smart_hit_no_hits(monkeypatch):
     """
     Test ai's smart_hit() method\n

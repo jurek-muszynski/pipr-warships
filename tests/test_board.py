@@ -68,6 +68,9 @@ def test_board_add_warship_invalid():
         board.add_warship(blocks)
     with pytest.raises(InvalidWarshipError):
         board.add_warship([(0, 4)])
+    board.add_warship([(0, 0)])
+    with pytest.raises(InvalidWarshipError):
+        board.add_warship([(0, 0), (0, 1)])
 
 
 def test_board_is_location_available():

@@ -135,6 +135,8 @@ class Board():
         for x, y in warship_to_add.blocks:
             if x >= self.__size or y >= self.__size:
                 raise InvalidWarshipError(warship_to_add)
+            if not self._is_location_available(x, y):
+                raise InvalidWarshipError(warship_to_add)
 
     def _is_location_available(self, x: int, y: int) -> bool:
         """

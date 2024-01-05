@@ -77,26 +77,28 @@ def print_warships_io(warships: list[Warship]) -> str:
     return warship_str
 
 
-def print_hit_warships_io(warships: list[Warship],
-                          locations: list[tuple[int, int]]) -> tuple[bool, bool, int]:
+def print_hit_warships_io(was_hit: bool, was_sunk: bool, warship: Warship = None) -> None:
     """
-    Prints an appropriate message depending on the
+    Presents an appropriate message depending on the
     result of the hit\n
-    Returns a tuple indicating the hit's result
-    (was_hit, was_sunk, hit_warship_size)
 
-    :param warships: list of warships
-    :type warships: list[Warship]
+    :param was_hit: indicates whether the warship was hit
+    :type was_hit: bool
 
-    :param locations: list of locations that were sucessfully hit
-    :type locations: list[tuple[int,int]]
+    :param was_sunk: indicates whether the warship was sunk
+    :type was_sunk: bool
+
+    :param warship: hit warship, defaults to None
+    :type warships: Warship
+
     """
-    for warship in warships:
-        if warship.was_hit(locations):
-            if warship.was_sunk():
-                print(f"{str(warship)} sunk")
-                return (True, True, warship.size)
+    match was_hit, was_sunk:
+        case True, True:
+            print(f"{str(warship)} sunk")
+            return
+        case True, False:
             print(f"{str(warship)} hit")
-            return (True, False, warship.size)
-    print("Miss")
-    return (False, False, 0)
+            return
+        case False, False:
+            print("Miss")
+            return

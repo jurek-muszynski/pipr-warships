@@ -1,7 +1,8 @@
-from warship import Warship
-from board_io import print_board_io, print_warships_io, print_hit_warships_io
+from .warship import Warship
+from utils.board_io import (print_board_io,
+                            print_warships_io, print_hit_warships_io)
 from random import choice
-from consts import MAX_NUM_OF_WARSHIPS, MAX_BOARD_SIZE
+from utils.consts import MAX_NUM_OF_WARSHIPS, MAX_BOARD_SIZE
 
 
 class InvalidWarshipCountError(Exception):

@@ -1,6 +1,6 @@
-from game import Game
+from classes.game import Game
 from time import sleep
-from system_io import clear
+from utils.system_io import clear
 from os import name
 
 

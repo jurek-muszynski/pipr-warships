@@ -1,8 +1,8 @@
-from board import Board
-from player_io import pick_location
-from consts import MAX_NUM_OF_WARSHIPS
+from .board import Board
+from utils.player_io import pick_location
+from utils.consts import MAX_NUM_OF_WARSHIPS
 from random import choice
-from system_io import clear
+from utils.system_io import clear
 from time import sleep
 
 

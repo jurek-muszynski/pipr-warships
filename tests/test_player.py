@@ -1,7 +1,7 @@
-from board import Board
-from board import CoordinatesOutOfRangeError
-from player import Player, Ai
-from player import InvalidHitInputError
+from classes.board import Board
+from classes.board import CoordinatesOutOfRangeError
+from classes.player import Player, Ai
+from classes.player import InvalidHitInputError
 import pytest
 
 
@@ -255,7 +255,7 @@ def test_ai_draw_coordinates_chosen_coors(monkeypatch):
     hit_before = [(1, 0), (1, 1)]
     available = [hit for hit in all_coordinates if hit not in hit_before]
     monkeypatch.setattr(ai, "remove_hit_before", lambda list: available)
-    monkeypatch.setattr("player.choice", lambda list: list[0])
+    monkeypatch.setattr("classes.player.choice", lambda list: list[0])
     assert ai.draw_coordinates() == (0, 0)
 
 
@@ -409,7 +409,8 @@ def test_ai_set_next_hit_with_key_chosen(monkeypatch):
     hit_size = 2
     monkeypatch.setattr(ai, "get_next_possible_locations", lambda size, hits: [
                         [(0, 1)], [(1, 2)], [(2, 1)], [(1, 0)]])
-    monkeypatch.setattr("player.choice", lambda locations: locations[0])
+    monkeypatch.setattr("classes.player.choice",
+                        lambda locations: locations[0])
     assert ai.set_next_hit_with_key(hit_size) == [(0, 1)]
 
 

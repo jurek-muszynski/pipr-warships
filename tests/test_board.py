@@ -1,6 +1,6 @@
-from board import Board
-from board import (InvalidWarshipCountError, InvalidWarshipError,
-                   CoordinatesOutOfRangeError)
+from classes.board import Board
+from classes.board import (InvalidWarshipCountError, InvalidWarshipError,
+                           CoordinatesOutOfRangeError)
 import pytest
 
 
@@ -183,7 +183,7 @@ def test_board_draw_location_std_chosen(monkeypatch):
     This test targets the standard use case, mocked drawn location
     """
     board = Board(2, 2)
-    monkeypatch.setattr("board.choice", lambda x: x[0])
+    monkeypatch.setattr("classes.board.choice", lambda x: x[0])
     drawed_locations = board.draw_location(2)
     assert board.draw_location(1) == [(0, 0)]
     assert drawed_locations == [(0, 0), (1, 0)]

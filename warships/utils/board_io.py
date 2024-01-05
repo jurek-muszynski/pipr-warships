@@ -1,4 +1,4 @@
-from warship import Warship
+from classes.warship import Warship
 
 
 def print_labels_horizontal_io(size: int) -> str:

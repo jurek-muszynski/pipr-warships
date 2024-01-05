@@ -1,10 +1,10 @@
-from board import Board
-from board import CoordinatesOutOfRangeError
-from player import Player, Ai
-from player import InvalidHitInputError
+from .board import Board
+from .board import CoordinatesOutOfRangeError
+from .player import Player, Ai
+from .player import InvalidHitInputError
 from time import sleep
-from consts import MAX_NUM_OF_WARSHIPS
-from system_io import clear
+from utils.consts import MAX_NUM_OF_WARSHIPS
+from utils.system_io import clear
 
 
 class GameEnded(Exception):

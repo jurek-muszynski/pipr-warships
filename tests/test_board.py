@@ -23,13 +23,15 @@ def test_create_board_invalid():
     with pytest.raises(ValueError):
         Board(0, 1)
     with pytest.raises(ValueError):
+        Board(1, 1)
+    with pytest.raises(ValueError):
         Board(27, 1)
     with pytest.raises(InvalidWarshipCountError):
-        Board(1, 0)
+        Board(2, 0)
     with pytest.raises(ValueError):
         Board(-10, 5)
     with pytest.raises(InvalidWarshipCountError):
-        Board(1, -1)
+        Board(2, -1)
     with pytest.raises(InvalidWarshipCountError):
         Board(4, 5)
 
@@ -39,8 +41,6 @@ def test_board_all_locations():
     Test board's all_locations() method\n
     This test targets the standard use case
     """
-    board1 = Board(1, 1)
-    assert board1.all_locations() == [(0, 0)]
     board2 = Board(2, 2)
     assert board2.all_locations() == [(0, 0), (0, 1), (1, 0), (1, 1)]
 

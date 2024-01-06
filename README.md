@@ -20,7 +20,7 @@ Głównym celem projektu było stworzenie interaktywnej aplikacji do gry w statk
 
 ## Opis Projektu:
 
-Projekt został wykonany w języku Python a rozgrywka odbywa się poprzez okno konsoli. Do dyspozycji są plansze w rozmiarze od 1x1 do 26x26, na których ulokowanych może być maksymalnie 5 statków, które są zbudowane z 1-5 masztów. Użytkownik na zmianę z komputerem „strzela” w wybrane współrzędne do momentu zatopienia przez któregoś z nich wszystkich statków.
+Projekt został wykonany w języku Python a rozgrywka odbywa się poprzez okno konsoli. Do dyspozycji są plansze w rozmiarze od 2x2 do 26x26, na których ulokowanych może być maksymalnie 5 statków, które są zbudowane z 1-5 masztów. Użytkownik na zmianę z komputerem „strzela” w wybrane współrzędne do momentu zatopienia przez któregoś z nich wszystkich statków.
 
 ### Struktura Plików
 ```
@@ -59,7 +59,7 @@ Projekt został wykonany w języku Python a rozgrywka odbywa się poprzez okno k
 
 **_Warship_** – klasa opisująca pojedynczy statek na planszy, każdy z nich wyróżnia się w szczególności rozmiarem i „blokami”, które reprezentują poszczególne współrzędne tworzące ten statek. Statek może być maksymalnie 5 masztowy i przewidziano jedynie „jednowymiarowe” warianty, tj. zawsze jeden z wymiarów statku będzie wynosił 1 (długość lub szerokość)
 
-**_Board_** – klasa opisująca planszę. Plansza jest zawsze macierzą kwadratową a jej możliwe wymiary należą do przedziału <1x1, 26x26>. Plansze NxN, gdzie N <= 4 zawierają N statków, natomiast plansze NxN, gdzie N > 4, zawierają zawsze 5 statków, (statki są obiektami klasy **_Warship_**)
+**_Board_** – klasa opisująca planszę. Plansza jest zawsze macierzą kwadratową a jej możliwe wymiary należą do przedziału <2x2, 26x26>. Plansze NxN, gdzie N <= 4 zawierają N statków, natomiast plansze NxN, gdzie N > 4, zawierają zawsze 5 statków, (statki są obiektami klasy **_Warship_**)
 
 **_BasePlayer_** – klasa abstrakcyjna opisująca gracza. Każdy gracz charakteryzuje się swoją własną planszą (obiekt klasy **_Board_**) oraz słownikiem zawierającym typy statków wraz z ich liczbą na planszy.
 
@@ -122,7 +122,7 @@ Zaleca się aby przed rozpoczęciem rozgrywki użytkownik zapoznał się z krót
 
 ### Rozgrywka
 
-Aby rozpocząć rozgrywkę, użytkownik powinien wybrać opcje **_1. Start Game_** z głównego menu gry. Na początku zostanie poproszony o wybranie rozmiaru planszy na której będzie chciał grać (**UWAGA**: wprowadza się tylko jedną liczbę, która musi być z zakresu <1,26>).
+Aby rozpocząć rozgrywkę, użytkownik powinien wybrać opcje **_1. Start Game_** z głównego menu gry. Na początku zostanie poproszony o wybranie rozmiaru planszy na której będzie chciał grać (**UWAGA**: wprowadza się tylko jedną liczbę, która musi być z zakresu <2,26>).
 <br/>
 <br/>
 Następnie użytkownik otrzyma możliwość ulokowania swoich statków na wcześniej wybranej planszy. W zależności od systemu operacyjnego na którym będzie uruchomiony program, użytkownik będzie mógł wybrać pozycje swoich statków za pomocą klawiszy UP/DOWN lub wprowadzając odpowiednią liczbę przy której wyświetli się wybrana pozycja statków, dokonany wybór należy potwierdzić przyciskiem ENTER.

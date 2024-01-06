@@ -1,6 +1,6 @@
-# PROJEKT PIPR – „Statki”
+# PROJEKT PIPR 2023/2024 – „Statki”
 
-#### Autor: Jerzy Muszyński, Informatyka gr 202.
+#### Autor: Jerzy Muszyński, Informatyka gr. 202
 
 ## Spis treści
 
@@ -20,7 +20,7 @@ Głównym celem projektu było stworzenie interaktywnej aplikacji do gry w statk
 
 ## Opis Projektu:
 
-Projekt został wykonany w języku Python a rozgrywka odbywa się poprzez okno konsoli bądź terminalu. Do dyspozycji są plansze w rozmiarze od 1x1 do 26x26, na których ulokowanych może być maksymalnie 5 statków, które są 1,2,3,4 i 5 masztowcami. Użytkownik na zmianę z komputerem „strzelają” w wybrane współrzędne do momentu zatopienia przez któregoś z nich wszystkich statków przeciwnika.
+Projekt został wykonany w języku Python a rozgrywka odbywa się poprzez okno konsoli bądź terminalu. Do dyspozycji są plansze w rozmiarze od 1x1 do 26x26, na których ulokowanych może być maksymalnie 5 statków, które są 1-5 masztowcami. Użytkownik na zmianę z komputerem „strzela” w wybrane współrzędne do momentu zatopienia przez któregoś z nich wszystkich statków.
 
 ### Struktura Plików:
 ```
@@ -67,6 +67,11 @@ Projekt został wykonany w języku Python a rozgrywka odbywa się poprzez okno k
 
 ### Przygotowanie Środowiska
 
+Najpierw należy sklonować repozytorium na własną maszynę i przejść do głównego katalogu projektu
+```
+git clone https://gitlab-stud.elka.pw.edu.pl/jmuszyns/warships.git
+cd warships
+```
 Program należy uruchomić w środowisku wirtualnym, którego konfiguracja znajduje się w pliku requirements.txt
 
 Aby odpowiednio przygotować środowisko należy
@@ -89,7 +94,7 @@ Na systemie **Windows**:
 ```
 pip install virtualenv
 python -m venv .venv
-.\venv\Scripts\activates
+.\venv\Scripts\activate
 pip install -r requirements.txt
 python warships/play.py
 ```
@@ -115,7 +120,14 @@ Aby rozpocząć rozgrywkę, użytkownik powinien wybrać opcje **_2. Start Game_
 <br/>
 <br/>
 Następnie użytkownik otrzyma możliwość ulokowania swoich statków na wcześniej wybranej planszy. W zależności od systemu operacyjnego na którym będzie uruchomiony program, użytkownik będzie mógł wybrać pozycje swoich statków za pomocą klawiszy UP/DOWN lub wprowadzając odpowiednią liczbę przy której wyświetli się wybrana pozycja statków, dokonany wybór należy potwierdzić przyciskiem ENTER.
-<br/>
+```
+ Place your 2 mast warship
+
+ -> ['A0', 'A1']
+    ['B0', 'B1']
+    ['A0', 'B0']
+    ['A1', 'B1']
+```
 <br/>
 Po ułożeniu statków rozpocznie się „właściwa” gra, polegająca na wymianie strzałów między komputerem a użytkownikiem. Podczas swojej tury użytkownik musi wprowadzić współrzędne w które będzie chciał oddać swój strzał. Współrzędne muszą być w formacie „A0”, gdzie A jest indeksem pierwszej kolumny, a 0 indeksem pierwszego wiersza, w przeciwnym wypadku użytkownik otrzyma informacje o nieprawidłowym wczytaniu współrzędnych i będzie musiał je wprowadzić jeszcze raz (wprowadzone współrzędne należy naturalnie potwierdzić przyciskiem ENTER).
 <br/>
@@ -130,19 +142,30 @@ Gra toczy się do momentu zatopienia wszystkich statków przeciwnika, a informac
 ### Testowanie
 
 Testy jednostkowe należy uruchomić również z poziomu uprzednio przygotowanego środowiska wirtualnego, za pomocą komendy `.venv/bin/pytest`
+```
+├── tests
+│   ├── test_board.py
+│   ├── test_game.py
+│   ├── test_player.py
+│   └── test_warship.py
+```
 
 ## Refleksje:
 
 Rozważania dotyczące projektu chciałbym rozpocząć od przyjrzenia się założeniom z którymi zaczynałem pracę nad tym rozwiązaniem.
 <br/>
 <br/>
+✔️
 Tak jak było to planowane wcześniej, utworzony program miał umożliwić użytkownikowi grę z „komputerem”. Utworzona aplikacja pozwala na wymianę strzałów między użytkownikiem a „wirtualnym” przeciwnikiem, który swoje ruchy wykonuje na podstawie logicznych „zasad”, tj. trafiając w jakiś statek, próbuje go zatopić analizując co może znajdować się w otoczeniu. Dodatkowo „komputer” jest świadomy tego w których miejscach może znajdować się jakiś statek bądź jego pozostały fragment, dzięki czemu omija takie współrzędne gdzie takiego statku na pewno być nie może.
 <br/>
 <br/>
+❌
 Niestety nie udało mi się zaimplementować poziomów trudności rozgrywki, które zaplanowałem na początku swojej pracy. Wymagało by to utworzenia kilku wariantów algorytmu strzelania przez „komputer”, które charakteryzowałyby się inną skutecznością w wyborze współrzędnych. Stwierdziłem, że problemem mogłaby być ocena takiej skuteczności i próba podtrzymania jej na stałym poziomie w każdej rozgrywce, dlatego ostatecznie zrezygnowałem z implementacji tego pomysłu i obecne rozwiązanie polega na pojedynczym algorytmie wyboru możliwych miejsc do strzału.
 <br/>
 <br/>
+❌
 Dodatkowym ograniczeniem obecnego rozwiązania może być fakt stałej liczby statków danego typu. Początkowo chciałem umożliwić użytkownikowi wybór liczby i typów statków którą będzie chciał zaalokować na swojej planszy, dzięki czemu rozgrywka mogłaby być ciekawsza i bardziej nietuzinkowa. Natomiast podczas implementacji tej funkcjonalności natknąłem się na problem w postaci nieprawidłowego wypełnienia tej planszy, co często kończyło się tym, że na planszy pojawiało się mniej statków niż zostało początkowo zadeklarowanych.
 <br/>
 <br/>
+✔️
 Podczas tego projektu przede wszystkim udało mi się nauczyć jak odpowiednio rozplanowywać zadania aby praca nad nimi była efektywna. Zanim zacząłem implementacje tego rozwiązania poświęciłem dość sporo czasu na dogłębną analizę wymagań i samej istoty przedstawionego problemu. Dopiero po zestawieniu przykładowych pomysłów i sprecyzowanych założeń przeszedłem do wstępnej implementacji fundamentalnych struktur mojego projektu. Naturalnie, czasem pojawiały się błędy, przez które trzeba było wrócić jeszcze raz do analizy danej funkcjonalności, czasami też, dochodziło do wielokrotnej modyfikacji uprzednio wybranego podejścia, aby zapewnić pełną wartość końcowego „produktu”. Mimo to, uważam, że udało mi się uzyskać dość szerokie spojrzenie na cały proces budowania projektu i doświadczyć jak kompleksowo tworzyć oprogramowanie „od zera”.

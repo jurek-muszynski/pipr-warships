@@ -67,7 +67,7 @@ class Board():
     def __init__(self, size: int, num_warships: int) -> None:
         """
         Creates an instance of the board class.\n
-        Raises ValueError if size is less/equal 0.\n
+        Raises ValueError if size is less/equal 1.\n
         Raises ValueError if size is greater than MAX_BOARD_SIZE.\n
         Raises InvalidWarshipCountError if number of warships is less/equal 0\n
         Raises InvalidWarshipCountError if number of warships is greater
@@ -80,7 +80,7 @@ class Board():
         :param num_warships: number of warships on the board
         :type num_warships: int
         """
-        if size <= 0 or size > MAX_BOARD_SIZE:
+        if size <= 1 or size > MAX_BOARD_SIZE:
             raise ValueError(size)
         else:
             self.__size = size

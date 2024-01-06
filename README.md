@@ -159,7 +159,7 @@ Gra toczy się do momentu zatopienia wszystkich statków przeciwnika, a informac
 
 ### Testowanie
 
-Testy jednostkowe należy uruchomić również z poziomu uprzednio przygotowanego środowiska wirtualnego, za pomocą komendy `.venv/bin/pytest` (Linux) lub `.venv\Scripts\pytest` (Windows)
+Testy jednostkowe należy uruchomić również z poziomu uprzednio przygotowanego środowiska wirtualnego, za pomocą komendy `.venv/bin/pytest` (Linux) lub `.venv\Scripts\pytest` (Windows). Powodem umieszczenia biblioteki **_pytest_** wewnątrz środowiska wirtualnego były konflikty jego konfiguracji i zewnętrznych bibliotek, co uniemożliwiało prawidłowe uruchomienie plików testowych
 ```
 ├── tests
 │   ├── test_board.py

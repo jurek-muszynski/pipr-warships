@@ -155,13 +155,17 @@ Testy jednostkowe należy uruchomić również z poziomu uprzednio przygotowaneg
 Rozważania dotyczące projektu chciałbym rozpocząć od przyjrzenia się założeniom z którymi zaczynałem pracę nad tym rozwiązaniem.
 <br/>
 <br/>
+✔️
 Tak jak było to planowane wcześniej, utworzony program miał umożliwić użytkownikowi grę z „komputerem”. Utworzona aplikacja pozwala na wymianę strzałów między użytkownikiem a „wirtualnym” przeciwnikiem, który swoje ruchy wykonuje na podstawie logicznych „zasad”, tj. trafiając w jakiś statek, próbuje go zatopić analizując co może znajdować się w otoczeniu. Dodatkowo „komputer” jest świadomy tego w których miejscach może znajdować się jakiś statek bądź jego pozostały fragment, dzięki czemu omija takie współrzędne gdzie takiego statku na pewno być nie może.
 <br/>
 <br/>
+❌
 Niestety nie udało mi się zaimplementować poziomów trudności rozgrywki, które zaplanowałem na początku swojej pracy. Wymagało by to utworzenia kilku wariantów algorytmu strzelania przez „komputer”, które charakteryzowałyby się inną skutecznością w wyborze współrzędnych. Stwierdziłem, że problemem mogłaby być ocena takiej skuteczności i próba podtrzymania jej na stałym poziomie w każdej rozgrywce, dlatego ostatecznie zrezygnowałem z implementacji tego pomysłu i obecne rozwiązanie polega na pojedynczym algorytmie wyboru możliwych miejsc do strzału.
 <br/>
 <br/>
+❌
 Dodatkowym ograniczeniem obecnego rozwiązania może być fakt stałej liczby statków danego typu. Początkowo chciałem umożliwić użytkownikowi wybór liczby i typów statków którą będzie chciał zaalokować na swojej planszy, dzięki czemu rozgrywka mogłaby być ciekawsza i bardziej nietuzinkowa. Natomiast podczas implementacji tej funkcjonalności natknąłem się na problem w postaci nieprawidłowego wypełnienia tej planszy, co często kończyło się tym, że na planszy pojawiało się mniej statków niż zostało początkowo zadeklarowanych.
 <br/>
 <br/>
+✔️
 Podczas tego projektu przede wszystkim udało mi się nauczyć jak odpowiednio rozplanowywać zadania aby praca nad nimi była efektywna. Zanim zacząłem implementacje tego rozwiązania poświęciłem dość sporo czasu na dogłębną analizę wymagań i samej istoty przedstawionego problemu. Dopiero po zestawieniu przykładowych pomysłów i sprecyzowanych założeń przeszedłem do wstępnej implementacji fundamentalnych struktur mojego projektu. Naturalnie, czasem pojawiały się błędy, przez które trzeba było wrócić jeszcze raz do analizy danej funkcjonalności, czasami też, dochodziło do wielokrotnej modyfikacji uprzednio wybranego podejścia, aby zapewnić pełną wartość końcowego „produktu”. Mimo to, uważam, że udało mi się uzyskać dość szerokie spojrzenie na cały proces budowania projektu i doświadczyć jak kompleksowo tworzyć oprogramowanie „od zera”.

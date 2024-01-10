@@ -158,8 +158,7 @@ Gra toczy się do momentu zatopienia wszystkich statków przeciwnika, a informac
 - '[ ]' oznacza że w danych współrzędnych nie ma statku bądź jest ukryty.
 
 ### Testowanie
-
-Testy jednostkowe należy uruchomić również z poziomu uprzednio przygotowanego środowiska wirtualnego, za pomocą komendy `.venv/bin/pytest` (Linux) lub `.venv\Scripts\pytest` (Windows). Powodem umieszczenia biblioteki **_pytest_** wewnątrz środowiska wirtualnego były konflikty jego konfiguracji i zewnętrznych bibliotek, co uniemożliwiało prawidłowe uruchomienie plików testowych
+Testy jednostkowe należy uruchomić również z poziomu uprzednio przygotowanego środowiska wirtualnego. Najpierw należy skonfigurować bibliotekę **_pytest_**, tak żeby korzystała z głównego katalogu projektu, CTRL+SHIFT+P `Python: Configure Tests`, `. Root Directory` oraz wybrać interpreter pochodzący z wirtualnego środowiska.
 ```
 ├── tests
 │   ├── test_board.py
